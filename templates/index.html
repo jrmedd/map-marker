@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPEG – maps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <script src="{{ url_for('static', filename='mapStyle.js')}}"> </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
+</head>
+<body>
+  <header>
+    <h1 class="sr-only">JPEG – maps</h1>
+    <form id="search">
+      <input id="location-query" name="location-query" type="text" required />
+      <label for="location-query" >Find a location</label>
+      <button class="icon-button" type="submit">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M8 6C8 7.10457 7.10457 8 6 8C4.89543 8 4 7.10457 4 6C4 4.89543 4.89543 4 6 4C7.10457 4 8 4.89543 8 6ZM8.03197 9.44618C7.43645 9.79807 6.74181 10 6 10C3.79086 10 2 8.20914 2 6C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 6.74181 9.79807 7.43645 9.44618 8.03197L13.1986 11.7844C13.5891 12.1749 13.5891 12.808 13.1986 13.1986C12.808 13.5891 12.1749 13.5891 11.7844 13.1986L8.03197 9.44618Z" />
+        </svg>
+        <span class="sr-only">Search</span>
+      </button>
+    </form>
+    <button id="add-message" class="icon-button">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M8 2C7.44772 2 7 2.44772 7 3V7H3C2.44772 7 2 7.44772 2 8C2 8.55229 2.44772 9 3 9H7V13C7 13.5523 7.44772 14 8 14C8.55229 14 9 13.5523 9 13V9H13C13.5523 9 14 8.55229 14 8C14 7.44772 13.5523 7 13 7H9V3C9 2.44772 8.55229 2 8 2Z" />
+      </svg>
+      <span class="sr-only">Add message</span>
+    </button>
+  </header>
+  <main>
+    <div id="map"></div>
+    <aside id="found-message-container">
+      <p id="found-message-content"></p>
+      <button id="close-found-message" class="icon-button">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M3.75737 3.75736C3.36684 4.14788 3.36684 4.78105 3.75737 5.17157L6.58579 8L3.75737 10.8284C3.36684 11.219 3.36684 11.8521 3.75737 12.2426C4.14789 12.6332 4.78105 12.6332 5.17158 12.2426L8.00001 9.41421L10.8284 12.2426C11.219 12.6332 11.8521 12.6332 12.2426 12.2426C12.6332 11.8521 12.6332 11.219 12.2426 10.8284L9.41422 8L12.2426 5.17157C12.6332 4.78105 12.6332 4.14788 12.2426 3.75736C11.8521 3.36684 11.219 3.36683 10.8284 3.75736L8.00001 6.58579L5.17158 3.75736C4.78105 3.36684 4.14789 3.36684 3.75737 3.75736Z" />
+      </svg>
+      <span class="sr-only">Close</span>
+    </button>
+    </aside>
+  </main>
+  <footer>
+    <form id="message">
+      <span id="message-input" name="message" type="text" rows="1" role="textbox" class="textarea" contenteditable="" tabindex="0" required></span>
+      <label for="location-query" >Enter your message</label>
+      <button id="send-message" class="icon-button" type="submit">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M2 2L14 8L2 14V2ZM3 9.36364L8 8L3 6.63636V3.70003L11.5999 8L3 12.3V9.36364Z" />
+        </svg>
+        <span class="sr-only">Send</span>
+      </button>
+    </form>
+    <button id="close-message" class="icon-button">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M3.75737 3.75736C3.36684 4.14788 3.36684 4.78105 3.75737 5.17157L6.58579 8L3.75737 10.8284C3.36684 11.219 3.36684 11.8521 3.75737 12.2426C4.14789 12.6332 4.78105 12.6332 5.17158 12.2426L8.00001 9.41421L10.8284 12.2426C11.219 12.6332 11.8521 12.6332 12.2426 12.2426C12.6332 11.8521 12.6332 11.219 12.2426 10.8284L9.41422 8L12.2426 5.17157C12.6332 4.78105 12.6332 4.14788 12.2426 3.75736C11.8521 3.36684 11.219 3.36683 10.8284 3.75736L8.00001 6.58579L5.17158 3.75736C4.78105 3.36684 4.14789 3.36684 3.75737 3.75736Z" />
+      </svg>
+      <span class="sr-only">Close</span>
+    </button>
+  </footer>
+  <aside id="outline"></aside>
+  <script src="{{ url_for('static', filename='markerMaker.js') }}"></script>
+</body>
+</html>
