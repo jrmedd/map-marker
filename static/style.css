@@ -19,11 +19,11 @@ header, footer, #found-message-container {
     position: fixed;
     justify-content: space-between;
     flex-direction: row;
-    align-items: flex-end;
-    width: 90%;
+    align-items: flex-end;    
     margin: 0 auto;
     box-sizing: border-box;
     z-index: 9999999;
+    min-width: 50ch;
     left: 50%;
     transform: translate(-50%);
     background: rgba(255, 255, 255, 1);
@@ -36,9 +36,13 @@ header, footer, #found-message-container {
 header {
     top: 0;
     margin-top: 1rem;
+    justify-content: center;
+    width: 33%;
 }
 
 footer {
+    width: 85%;
+    max-width: 85%;
     bottom: -100vh;
     margin-bottom: 1rem;
 }
@@ -70,7 +74,7 @@ footer {
     word-wrap: normal !important;
 }
 
-.icon-button {
+.icon-button, .icon-text-button {
     min-width: 3rem;
     max-width: 3rem;
     min-height: 3rem;
@@ -83,11 +87,23 @@ footer {
     justify-content: center;
 }
 
-.icon-button .icon {
+.icon-text-button {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: .5rem;
+    width: auto;
+    max-width: unset;
+    min-width: unset;
+    border-radius: 2rem;
+}
+
+.icon-button .icon,
+.icon-text-button .icon {
     fill: var(--land);
 }
 
-.icon-button svg {
+.icon-button svg,
+.icon-text-button svg {
     width: 1.5rem;
     height: 1.5rem;
 }
@@ -103,10 +119,17 @@ button:active svg {
     display: flex;
     gap: 1rem;
     flex-direction: row;
-    width: 50%;
     position: relative;
     justify-content: flex-start;
     align-items: flex-end;
+}
+
+#search {
+    flex: 1;
+}
+
+#message {
+    width: 50%;
 }
 
 footer form {
@@ -126,12 +149,20 @@ label {
 
 input:focus+label,
 input:valid+label,
+.textarea:focus+label,
 .textarea:not(:empty)+label {
     position: absolute;
     top: 0;
     left: 0;
     margin-top: -.5rem;
     font-size: .8rem;
+}
+
+#add-message {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 2rem;
 }
 
 input {
@@ -178,5 +209,6 @@ button {
     pointer-events: none;
     top: 50%;
     left: 50%;
+    max-width: 50ch;
     transform: translate(-50%, -50%);
 }

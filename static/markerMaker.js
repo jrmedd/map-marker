@@ -1,4 +1,6 @@
 let map;
+let clientLat = 53.4778231;
+let clientLng = -2.2366665;
 
 let userMarker;
 let editMode = false;
@@ -26,13 +28,18 @@ const closeFoundMessageButton = document.getElementById("close-found-message");
 
 
 function initMap(callback) {
+  fetch("http://ip-api.com/json").then(res=>res.status == 200 && res.json()).then(data => {
+    clientLat = data.lat;
+    clientLng = data.lon;
+  }).catch(()=>console.log("Failed to guess user's location"));
     map = new google.maps.Map(mapContainer, {
       center: { lat: 53.442332922585884, lng: -2.186768968688275 },
-      zoom: 18,
+      zoom: 14,
       styles: mapStyle,
       mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: false,
+      disableDefaultUI: true,
     });
         map.addListener("click", event=> {
         if (editMode) {
@@ -87,6 +94,7 @@ function initMap(callback) {
       footer.style.bottom = "0px";
       header.style.top = "-100vh"
       pageOutline.style.opacity = 1;
+      addButton.style.opacity = 0;
       map.setOptions({draggable: false, draggableCursor:'crosshair'})
     });
 
@@ -95,6 +103,7 @@ function initMap(callback) {
       footer.style.bottom = "-100vh";
       header.style.top = "0px";
       pageOutline.style.opacity = 0;
+      addButton.style.opacity = 1;
       map.setOptions({ draggable: true, draggableCursor: 'grab' });
       userMarker.setMap(null);
     });

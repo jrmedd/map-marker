@@ -4,6 +4,7 @@ import os
 from flask import Flask, flash, url_for, render_template, request, redirect, make_response, Response, jsonify
 from pymongo import MongoClient
 import requests
+from bson.objectid import ObjectId
 
 
 MONGO_URL = os.environ.get('MONGO_URL')
@@ -23,11 +24,22 @@ APP = Flask(__name__)
 def index():
     return render_template('index.html', MAPS_API=MAPS_API)
 
+@APP.route('/admin')
+def admin():
+    markers = list(MARKERS.find({'approved': False}))
+    for marker in markers:
+        marker['_id'] = str(marker['_id'])
+    return render_template('admin.html', markers=markers)
+
 @APP.route('/markers', methods=["GET"])    
 def markers():
     markers = list(MARKERS.find({'approved': True}, {'_id':0}))
     return jsonify(markers=markers)
 
+@APP.route('/approve/<id>')
+def approve(id):
+    MARKERS.update_one({'_id': ObjectId(id)}, {'$set':{'approved': True}})
+    return jsonify(approved=True)
 
 @APP.route('/message', methods=["POST"])
 def message():

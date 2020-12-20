@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    <h1>Admin</h1>
+    <ul>
+        {% for marker in markers %}
+            <li>{{ marker.message }} <button class="approve-button" value="{{marker._id}}">Approve</button></li>
+        {% endfor %}
+    </ul>
+    <script>
+        for (let approveButton of document.getElementsByClassName('approve-button')) {
+            approveButton.addEventListener("click", event => fetch(`${location.origin}/approve/${event.target.value}`).then(response => response.status == 200 && response.json()).then(data=>data.approved && approveButton.parentNode.remove()))
+        }
+    </script>
+</body>
+</html>
