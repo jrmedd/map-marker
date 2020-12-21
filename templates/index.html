@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JPEG – maps</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?2" />
     <script src="{{ url_for('static', filename='mapStyle.js')}}"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
 </head>
 <body>
   <header>
-    <h1 class="sr-only">JPEG – maps</h1>
+    <h1 class="sr-only">Map tag</h1>
     <form id="search">
       <input id="location-query" name="location-query" type="text" required />
       <label for="location-query" >Find a location</label>
@@ -43,7 +43,7 @@
   <footer>
     <form id="message">
       <span id="message-input" name="message" type="text" rows="1" role="textbox" class="textarea" contenteditable="" tabindex="0" required></span>
-      <label for="location-query" >Enter your message</label>
+      <label for="location-query" >Message...</label>
       <button id="send-message" class="icon-button" type="submit">
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M2 2L14 8L2 14V2ZM3 9.36364L8 8L3 6.63636V3.70003L11.5999 8L3 12.3V9.36364Z" />
@@ -59,6 +59,6 @@
     </button>
   </footer>
   <aside id="outline"></aside>
-  <script src="{{ url_for('static', filename='markerMaker.js') }}"></script>
+  <script src="{{ url_for('static', filename='markerMaker.js') }}?2"></script>
 </body>
 </html>

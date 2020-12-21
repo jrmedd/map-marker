@@ -36,6 +36,7 @@ function initMap(callback) {
       center: { lat: 53.442332922585884, lng: -2.186768968688275 },
       zoom: 14,
       styles: mapStyle,
+      gestureHandling: "greedy",
       mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: false,
@@ -86,6 +87,7 @@ function initMap(callback) {
                 if (data.result.candidates.length > 0) {
                     const newLocation = data.result.candidates[0].geometry.location;
                     map.setCenter(new google.maps.LatLng(newLocation.lat, newLocation.lng));
+                    map.setZoom(20)
                 };
               });
         });
