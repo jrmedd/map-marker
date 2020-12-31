@@ -1,10 +1,11 @@
 import datetime
 import os
 
+from bson.objectid import ObjectId
 from flask import Flask, flash, url_for, render_template, request, redirect, make_response, Response, jsonify
+from flask_cors import CORS
 from pymongo import MongoClient
 import requests
-from bson.objectid import ObjectId
 
 
 MONGO_URL = os.environ.get('MONGO_URL')
@@ -18,7 +19,7 @@ PLACES_API_KEY = os.environ.get('PLACES_API')
 
 APP = Flask(__name__)
 
-
+CORS(APP)
 
 @APP.route('/')
 def index():

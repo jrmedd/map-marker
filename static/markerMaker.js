@@ -33,7 +33,7 @@ function initMap(callback) {
     clientLng = data.lon;
   }).catch(()=>console.log("Failed to guess user's location"));
     map = new google.maps.Map(mapContainer, {
-      center: { lat: 53.442332922585884, lng: -2.186768968688275 },
+      center: { lat: clientLat, lng: clientLng },
       zoom: 14,
       styles: mapStyle,
       gestureHandling: "greedy",
