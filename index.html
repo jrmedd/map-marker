@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JPEG – maps</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?2" />
-    <script src="{{ url_for('static', filename='mapStyle.js')}}"> </script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="mapStyle.js"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
 </head>
 <body>
@@ -59,6 +59,6 @@
     </button>
   </footer>
   <aside id="outline"></aside>
-  <script src="{{ url_for('static', filename='markerMaker.js') }}?2"></script>
+  <script src="markerMaker.js"></script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+const rootUrl = "https://maptag.xyz";
+
 let map;
 let clientLat = 53.4778231;
 let clientLng = -2.2366665;
@@ -62,7 +64,7 @@ function initMap(callback) {
           const lat = userMarker.position.lat();
           const lng = userMarker.position.lng();
           const submission = {message:messageInput.textContent, lat: lat, lng: lng }
-          fetch(`${location.origin}/message`, {
+          fetch(`${rootUrl}/message`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -81,7 +83,7 @@ function initMap(callback) {
         searchForm.addEventListener("submit", event => {
           event.preventDefault();
           locationQuery.value.length > 0 &&
-            fetch(`${location.origin}/search?query=${locationQuery.value}&locationbias=${map.center.lat()},${map.center.lng()}`)
+            fetch(`${rootUrl}/search?query=${locationQuery.value}&locationbias=${map.center.lat()},${map.center.lng()}`)
               .then((response) => response.status == 200 && response.json())
               .then((data) => {
                 if (data.result.candidates.length > 0) {
@@ -116,7 +118,7 @@ function initMap(callback) {
 }
 
 const fetchMarkers = () => {
-    fetch(`${location.origin}/markers`).then(res => res.status == 200 && res.json()).then(data => {
+    fetch(`${rootUrl}/markers`).then(res => res.status == 200 && res.json()).then(data => {
         console.log(data);
         data.markers.map(marker=> {
             let newMarker = new google.maps.Marker({
