@@ -1,17 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
 :root {
---park: #baad3f;
---land: #f9ddc5;
---main-road: #B75B61;
---water: #1994bf;
+--park: #8affb3;
+--land: #ccfadc;
+--main-road: #ffccdb;
+--water: #4365fa;
  }
 
 html, body {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Playfair Display', monospace;
     margin: 0;
     padding: 0;
     overflow: hidden;
+    color: #0000ff;
 }
 
 header, footer, #found-message-container {
@@ -47,7 +48,7 @@ footer {
     margin-bottom: 1rem;
 }
 
-#outline {
+/*#outline {
     position: fixed;
     pointer-events: none;
     top: 0;
@@ -57,7 +58,7 @@ footer {
     z-index: 99999999;
     opacity: 0;
     box-sizing: border-box;
-    transition: all 0.5s ease;
+    transition: all 0.5s ease; */
 }
 
 .sr-only {
@@ -80,7 +81,7 @@ footer {
     min-height: 3rem;
     max-height: 3rem;
     border: none;
-    background: var(--main-road);
+    background: var(--water);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -99,7 +100,7 @@ footer {
 
 .icon-button .icon,
 .icon-text-button .icon {
-    fill: var(--land);
+    fill: var(--water);
 }
 
 .icon-button svg,
@@ -171,7 +172,7 @@ input {
     font-size: 1.25rem;
     outline: none;
     border: 0;
-    border-bottom: 2px solid var(--main-road);
+    border-bottom: 2px solid var(--park);
     padding-top: .5rem;
 }
 

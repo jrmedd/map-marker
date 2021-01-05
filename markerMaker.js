@@ -1,8 +1,8 @@
 const rootUrl = "https://maptag.xyz";
 
 let map;
-let clientLat = 53.4778231;
-let clientLng = -2.2366665;
+let clientLat = 53.49606;
+let clientLng = -2.51932;
 
 let userMarker;
 let editMode = false;
@@ -10,7 +10,6 @@ let editMode = false;
 const mapContainer = document.getElementById("map");
 
 const pageOutline = document.getElementById("outline");
-pageOutline.style.border = "8px dashed #B75B61";
 
 const searchForm = document.getElementById("search");
 const locationQuery = document.getElementById("location-query");
@@ -35,7 +34,7 @@ function initMap(callback) {
     clientLng = data.lon;
   }).catch(()=>console.log("Failed to guess user's location"));
     map = new google.maps.Map(mapContainer, {
-      center: { lat: clientLat, lng: clientLng },
+      center: { lat: 53.49591798483554, lng: -2.519449740945707 },
       zoom: 14,
       styles: mapStyle,
       gestureHandling: "greedy",
