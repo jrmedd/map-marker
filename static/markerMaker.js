@@ -1,12 +1,13 @@
 let map;
 
-let userBin;
+let userEntry;
+let addingLitterOrBin = "bin";
 let editMode = false;
 
 const mapContainer = document.getElementById("map");
 
 const pageOutline = document.getElementById("outline");
-pageOutline.style.border = "8px dashed #B75B61";
+pageOutline.style.border = "8px dashed #7DCDCD";
 
 const searchForm = document.getElementById("search");
 const locationQuery = document.getElementById("location-query");
@@ -17,12 +18,22 @@ const messageInput = document.getElementById("message-input");
 const addBinButton = document.getElementById("add-bin");
 const header = document.getElementsByTagName("header")[0];
 
+const addLitterButton = document.getElementById("add-litter");
+
 const closeButton = document.getElementById("close-message");
 const footer = document.getElementsByTagName("footer")[0];
 
 const foundMessageContainer = document.getElementById("found-message-container");
 const foundMessageContent = document.getElementById("found-message-content");
 const closeFoundMessageButton = document.getElementById("close-found-message");
+
+const overlay = document.getElementById("overlay");
+
+const litterOrBin = document.getElementById("litter-or-bin");
+const messageTypeMenu = document.getElementById("message-or-photo");
+
+const createMessageButton = document.getElementById("create-message");
+const createPhotoButton = document.getElementById("create-photo");
 
 
 function initMap(callback) {
@@ -38,24 +49,25 @@ function initMap(callback) {
     });
         map.addListener("click", event=> {
         if (editMode) {
-            if (userBin != undefined) {
-                userBin.setMap(null)
+            if (userEntry != undefined) {
+                userEntry.setMap(null)
             }
-            userBin = new google.maps.Marker({
+            userEntry = new google.maps.Marker({
               position: event.latLng,
               map: map,
               icon: { ...newBinIcon, anchor: new google.maps.Point(11, 22), strokeColor: icons.new.color},
               draggable: true,
               raiseOnDrag: false
             });
+            overlay.style.opacity = 0;
         }
           foundMessageContainer.style.opacity = 0;
         });
         messageForm.addEventListener("submit", event => {
           event.preventDefault();
-          const lat = userBin.position.lat();
-          const lng = userBin.position.lng();
-          const submission = {message:messageInput.textContent, lat: lat, lng: lng }
+          const lat = userEntry.position.lat();
+          const lng = userEntry.position.lng();
+          const submission = {litterOrBin: addingLitterOrBin,message:messageInput.textContent, lat: lat, lng: lng }
           fetch(`${location.origin}/message`, {
             method: "POST",
             headers: {
@@ -65,12 +77,12 @@ function initMap(callback) {
           });
           editMode = false;
           pageOutline.style.opacity = 0;
-          footer.style.left = "-100vw";
-          setTimeout(()=>{footer.style.bottom = "-100vh";footer.style.left = "50%";}, 1000);
-          header.style.top = "0px";
+          hideFooter();
+          showHeader();
+          showAddButtons();
           map.setOptions({ draggable: true, draggableCursor: "grab" });
           messageInput.textContent = ""; 
-          userBin.setMap(null);
+          userEntry.setMap(null);
         })
         searchForm.addEventListener("submit", event => {
           event.preventDefault();
@@ -85,27 +97,89 @@ function initMap(callback) {
                 };
               });
         });
-    addBinButton.addEventListener("click", () => {
-      editMode = true;
-      footer.style.bottom = "0px";
-      header.style.top = "-100vh"
-      pageOutline.style.opacity = 1;
-      addBinButton.style.opacity = 0;
-      map.setOptions({draggable: false, draggableCursor:'crosshair'})
-    });
-
-    closeButton.addEventListener("click", () => {
-      editMode = false;
-      footer.style.bottom = "-100vh";
-      header.style.top = "0px";
-      pageOutline.style.opacity = 0;
+    
+    const showAddButtons = () => {
       addBinButton.style.opacity = 1;
-      map.setOptions({ draggable: true, draggableCursor: 'grab' });
-      userBin.setMap(null);
-    });
+      addBinButton.style.pointerEvent - "unset";
+      addLitterButton.style.opacity = 1;
+      addLitterButton.style.pointerEvent - "unset";
+    }
+
+    const hideAddButtons = () => {
+      addBinButton.style.opacity = 0;
+      addBinButton.style.pointerEvent - "none";
+      addLitterButton.style.opacity = 0;
+      addLitterButton.style.pointerEvent - "none";
+    };
+
+    const showHeader = () => {
+      header.style.top = "0vh";
+    }
+    const showFooter = () => {
+      footer.style.bottom = "0vh";
+    }
+
+    const showMessageTypeMenu = ()=>{
+      messageTypeMenu.style.right = "0vh"
+    }
+
+    const hideHeader = () => {
+      header.style.top = "-100vh";
+    };
+    const hideFooter = () => {
+      footer.style.bottom = "-100vh";
+    };
+
+    const hideMessageTypeMenu = () => {
+      messageTypeMenu.style.right = "-100vh";
+    };
+
+    const showMessageCreator = () => {
+      showFooter();
+      hideMessageTypeMenu();
+    };
+
+    const hideMessageCreator = () => {
+      editMode = false;
+      hideFooter();
+      showHeader();
+      pageOutline.style.opacity = 0;
+      showAddButtons();
+      map.setOptions({ draggable: true, draggableCursor: "grab" });
+      userEntry.setMap(null);
+    };
+    const showMessageTypes = event => {
+      console.log(event);
+      hideHeader();
+      hideAddButtons();
+      showMessageTypeMenu();
+      addingLitterOrBin = event.target.value;
+      document.getElementById("litter-or-bin-message").innerText = addingLitterOrBin;
+      litterOrBin.setAttribute("value", addingLitterOrBin);
+      overlay.style.opacity = 1;
+      editMode = true;
+      pageOutline.style.opacity = 1;
+      map.setOptions({ draggable: false, draggableCursor: "crosshair" });
+    }
+    addBinButton.addEventListener("click", showMessageTypes);
+    addLitterButton.addEventListener("click", showMessageTypes);
+    closeButton.addEventListener("click", hideMessageCreator);
+
+    createMessageButton.addEventListener("click", showMessageCreator);
     closeFoundMessageButton.addEventListener("click", () => {
       foundMessageContainer.style.opacity = 0;
-    }) 
+    });
+
+    const showCamera = () =>{
+      document.getElementById("camera-container").style.display = "flex";
+      document.getElementById("camera-container").style.pointerEvents = "unset";
+    } 
+
+    createPhotoButton.addEventListener(()=>{
+      showCamera();
+      switchCamera();
+    });
+
     callback();
 }
 

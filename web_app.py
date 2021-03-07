@@ -48,9 +48,6 @@ def litter_bins():
     litter_bins = list(BINS.find({'approved': True}, {'_id':0}))
     return jsonify(litterBins=litter_bins)
 
-@APP.route('/image-capture', methods=["GET"])
-def image_capture():
-    return render_template('imageCapture.html')
 
 @APP.route('/post-image', methods=["POST"])
 def post_image():
@@ -74,4 +71,4 @@ def search():
         return jsonify(result=r.json())
 
 if __name__ == '__main__':
-    APP.run(debug=True, port=5001)
+    APP.run(debug=True)

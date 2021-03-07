@@ -13,16 +13,18 @@ navigator.mediaDevices
   }
 );
 
-document.getElementById("switch-camera").addEventListener("click", event => {
+
+function switchCamera() {
   cameraIndex = (cameraIndex + 1) % videoDevices.length;
   navigator.mediaDevices
-    .getUserMedia({ video: { deviceId: videoDevices[cameraIndex].deviceId } })
-    .then((stream) => {
-      document.querySelector("video").srcObject = stream;
-      const track = stream.getVideoTracks()[0];
-      imageCapture = new ImageCapture(track);
-    });
-});
+  .getUserMedia({ video: { deviceId: videoDevices[cameraIndex].deviceId } })
+  .then((stream) => {
+    document.querySelector("video").srcObject = stream;
+    const track = stream.getVideoTracks()[0];
+    imageCapture = new ImageCapture(track);
+  });
+}
+document.getElementById("switch-camera").addEventListener("click", switchCamera);
 
 document.getElementById("take-picture").addEventListener("click", ()=> {
   imageCapture.takePhoto().then((blob) => {
@@ -39,13 +41,7 @@ document.getElementById("take-picture").addEventListener("click", ()=> {
   });
 }
 )
-/*
-document.getElementById("toggle-flash").addEventListener("click", event=>{
-  photoOptions.fillLightMode = photoOptions.fillLightMode == "off" ? "flash" : "off";
-  document.getElementById("flash-setting").textContent = photoOptions.fillLightMode === "flash" ? "on" : "off";
-  imageCapture.setOptions(photoOptions);
-})
-*/
+
 // Takes a data URI and returns the Data URI corresponding to the resized image at the wanted size.
 function resizedataURL(datas, wantedWidth, wantedHeight){
     return new Promise(async function(resolve,reject){
