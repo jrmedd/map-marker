@@ -1,8 +1,6 @@
 let map;
-let clientLat = 53.4778231;
-let clientLng = -2.2366665;
 
-let userMarker;
+let userBin;
 let editMode = false;
 
 const mapContainer = document.getElementById("map");
@@ -16,7 +14,7 @@ const locationQuery = document.getElementById("location-query");
 const messageForm = document.getElementById("message");
 const messageInput = document.getElementById("message-input");
 
-const addButton = document.getElementById("add-message");
+const addBinButton = document.getElementById("add-bin");
 const header = document.getElementsByTagName("header")[0];
 
 const closeButton = document.getElementById("close-message");
@@ -28,10 +26,6 @@ const closeFoundMessageButton = document.getElementById("close-found-message");
 
 
 function initMap(callback) {
-  fetch("http://ip-api.com/json").then(res=>res.status == 200 && res.json()).then(data => {
-    clientLat = data.lat;
-    clientLng = data.lon;
-  }).catch(()=>console.log("Failed to guess user's location"));
     map = new google.maps.Map(mapContainer, {
       center: { lat: clientLat, lng: clientLng },
       zoom: 14,
@@ -44,13 +38,13 @@ function initMap(callback) {
     });
         map.addListener("click", event=> {
         if (editMode) {
-            if (userMarker != undefined) {
-                userMarker.setMap(null)
+            if (userBin != undefined) {
+                userBin.setMap(null)
             }
-            userMarker = new google.maps.Marker({
+            userBin = new google.maps.Marker({
               position: event.latLng,
               map: map,
-              icon: { ...newMarkerIcon, anchor: new google.maps.Point(11, 22), strokeColor: icons.new.color},
+              icon: { ...newBinIcon, anchor: new google.maps.Point(11, 22), strokeColor: icons.new.color},
               draggable: true,
               raiseOnDrag: false
             });
@@ -59,8 +53,8 @@ function initMap(callback) {
         });
         messageForm.addEventListener("submit", event => {
           event.preventDefault();
-          const lat = userMarker.position.lat();
-          const lng = userMarker.position.lng();
+          const lat = userBin.position.lat();
+          const lng = userBin.position.lng();
           const submission = {message:messageInput.textContent, lat: lat, lng: lng }
           fetch(`${location.origin}/message`, {
             method: "POST",
@@ -76,7 +70,7 @@ function initMap(callback) {
           header.style.top = "0px";
           map.setOptions({ draggable: true, draggableCursor: "grab" });
           messageInput.textContent = ""; 
-          userMarker.setMap(null);
+          userBin.setMap(null);
         })
         searchForm.addEventListener("submit", event => {
           event.preventDefault();
@@ -91,12 +85,12 @@ function initMap(callback) {
                 };
               });
         });
-    addButton.addEventListener("click", () => {
+    addBinButton.addEventListener("click", () => {
       editMode = true;
       footer.style.bottom = "0px";
       header.style.top = "-100vh"
       pageOutline.style.opacity = 1;
-      addButton.style.opacity = 0;
+      addBinButton.style.opacity = 0;
       map.setOptions({draggable: false, draggableCursor:'crosshair'})
     });
 
@@ -105,9 +99,9 @@ function initMap(callback) {
       footer.style.bottom = "-100vh";
       header.style.top = "0px";
       pageOutline.style.opacity = 0;
-      addButton.style.opacity = 1;
+      addBinButton.style.opacity = 1;
       map.setOptions({ draggable: true, draggableCursor: 'grab' });
-      userMarker.setMap(null);
+      userBin.setMap(null);
     });
     closeFoundMessageButton.addEventListener("click", () => {
       foundMessageContainer.style.opacity = 0;
@@ -116,21 +110,21 @@ function initMap(callback) {
 }
 
 const fetchMarkers = () => {
-    fetch(`${location.origin}/markers`).then(res => res.status == 200 && res.json()).then(data => {
+    fetch(`${location.origin}/litter-bins`).then(res => res.status == 200 && res.json()).then(data => {
         console.log(data);
-        data.markers.map(marker=> {
+        data.litterBins.map(litterBin=> {
             let newMarker = new google.maps.Marker({
-                position: { lat: marker.lat, lng: marker.lng },
+                position: { lat: litterBin.lat, lng: litterBin.lng },
                 map: map,
                 icon: { ...markerIcon, fillColor: icons.default.color, anchor: new google.maps.Point(11, 22)},
-                title: marker.message
+                title: litterBin.message
                 
         });
-        newMarker.addListener("mouseover", () => newMarker.setIcon({ ...markerIcon, anchor: new google.maps.Point(11, 22), fillColor: icons.hover.color }));
-        newMarker.addListener("mouseout", () => newMarker.setIcon({ ...markerIcon, anchor: new google.maps.Point(11, 22), fillColor: icons.default.color }));
+        newMarker.addListener("mouseover", () => newMarker.setIcon({ ...newBinIcon, anchor: new google.maps.Point(11, 22), fillColor: icons.hover.color }));
+        newMarker.addListener("mouseout", () => newMarker.setIcon({ ...newBinIcon, anchor: new google.maps.Point(11, 22), fillColor: icons.default.color }));
         newMarker.addListener("click", () => { 
           foundMessageContainer.style.opacity = 1;
-          foundMessageContent.textContent = marker.message;
+          foundMessageContent.textContent = litterBin.message;
         }
         );
         });

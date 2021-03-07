@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPEG – maps</title>
+    <title>Manchester – bins</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?2" />
     <script src="{{ url_for('static', filename='mapStyle.js')}}"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
@@ -24,8 +24,14 @@
   </header>
   <main>
     <div id="map"></div>
-    <button id="add-message" class="icon-text-button">
-      Add message
+    <button id="add-litter" class="icon-text-button">
+      Add litter
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M8 2C7.44772 2 7 2.44772 7 3V7H3C2.44772 7 2 7.44772 2 8C2 8.55229 2.44772 9 3 9H7V13C7 13.5523 7.44772 14 8 14C8.55229 14 9 13.5523 9 13V9H13C13.5523 9 14 8.55229 14 8C14 7.44772 13.5523 7 13 7H9V3C9 2.44772 8.55229 2 8 2Z" />
+      </svg>
+    </button>
+    <button id="add-bin" class="icon-text-button">
+      Add bin
       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M8 2C7.44772 2 7 2.44772 7 3V7H3C2.44772 7 2 7.44772 2 8C2 8.55229 2.44772 9 3 9H7V13C7 13.5523 7.44772 14 8 14C8.55229 14 9 13.5523 9 13V9H13C13.5523 9 14 8.55229 14 8C14 7.44772 13.5523 7 13 7H9V3C9 2.44772 8.55229 2 8 2Z" />
       </svg>
@@ -43,7 +49,7 @@
   <footer>
     <form id="message">
       <span id="message-input" name="message" type="text" rows="1" role="textbox" class="textarea" contenteditable="" tabindex="0" required></span>
-      <label for="location-query" >Message...</label>
+      <label for="location-query" >Bin name...</label>
       <button id="send-message" class="icon-button" type="submit">
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M2 2L14 8L2 14V2ZM3 9.36364L8 8L3 6.63636V3.70003L11.5999 8L3 12.3V9.36364Z" />
@@ -58,7 +64,24 @@
       <span class="sr-only">Close</span>
     </button>
   </footer>
+  <div id="camera-container">
+        <!--dl>
+            <dt>Flash</dt>
+            <dd id="flash-setting">off</dd>
+        </dl-->
+        <video autoplay playsinline></video>
+        <menu type="toolbar">
+            <button class="camera-button" aria-label="Switch camera" id="switch-camera"><img src="{{ url_for('static', filename='switch.svg') }}" /></button>
+            <button class="camera-button" aria-label="Take picture" id="take-picture"><img src="{{ url_for('static', filename='capture.svg') }}" /></button>
+            <!--button class="camera-button" aria-label="Toggle flash" id="toggle-flash"><img src="{{ url_for('static', filename='flash.svg') }}" /></button-->
+        </menu>
+    </div>
+    <script src="{{ url_for('static', filename='getUserImage.js') }}"></script>
   <aside id="outline"></aside>
+  <script>
+      const clientLat = {{ latitude }};
+      const clientLng = {{ longitude }};
+    </script>
   <script src="{{ url_for('static', filename='markerMaker.js') }}?2"></script>
 </body>
 </html>

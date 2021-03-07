@@ -8,8 +8,8 @@
 <body>
     <h1>Admin</h1>
     <ul>
-        {% for marker in markers %}
-            <li>{{ marker.message }} <button class="approve-button" value="{{marker._id}}">Approve</button></li>
+        {% for litter_bin in litter_bins %}
+            <li>{{ litter_bin.message }} <button class="approve-button" value="{{litter_bin._id}}">Approve</button></li>
         {% endfor %}
     </ul>
     <script>

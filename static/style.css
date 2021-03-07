@@ -158,9 +158,16 @@ input:valid+label,
     font-size: .8rem;
 }
 
-#add-message {
+#add-bin {
     position: fixed;
     right: 0;
+    bottom: 0;
+    margin: 2rem;
+}
+
+#add-litter {
+    position: fixed;
+    left: 0;
     bottom: 0;
     margin: 2rem;
 }
@@ -211,4 +218,71 @@ button {
     left: 50%;
     max-width: 50ch;
     transform: translate(-50%, -50%);
+}
+
+#camera-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    flex-flow: column;
+    z-index: 999999999;
+    display: none;
+    pointer-events: none;
+}
+
+video {
+    min-width: 100%;
+    min-height: 85%;
+    object-fit: cover;
+}
+
+menu {
+    padding: 0;
+    margin: 0;
+    height: 15%;
+    background: black;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.camera-button {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    outline: none;
+    transition: all .3s ease;
+}
+
+.camera-button:active {
+    filter: invert(.5);
+    transform: scale(.9);
+}
+
+.camera-button > img {
+    width: 100%;
+}
+
+
+#camera-container dl {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 9999;
+    margin: none;
+    padding: none;
+    color: #ffffff;
+}
+
+dl > * {
+    text-align: left;
+    margin: .1rem;
+    padding: 0;
+    display: inline;
 }

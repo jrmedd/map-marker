@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manchester – bins image capture</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="camera-container">
+        <dl>
+            <dt>Flash</dt>
+            <dd id="flash-setting">off</dd>
+        </dl>
+        <video autoplay playsinline></video>
+        <menu type="toolbar">
+            <button class="camera-button" aria-label="Switch camera" id="switch-camera"><img src="{{ url_for('static', filename='switch.svg') }}" /></button>
+            <button class="camera-button" aria-label="Take picture" id="take-picture"><img src="{{ url_for('static', filename='capture.svg') }}" /></button>
+            <!--button class="camera-button" aria-label="Toggle flash" id="toggle-flash"><img src="{{ url_for('static', filename='flash.svg') }}" /></button-->
+        </menu>
+    </div>
+    <script src="{{ url_for('static', filename='getUserImage.js') }}"></script>
+</body>
+</html>
