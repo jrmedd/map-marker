@@ -51,8 +51,8 @@ def litter_bins():
 
 @APP.route('/post-image', methods=["POST"])
 def post_image():
-    IMAGES.insert_one({'image':request.form.get('image')})
-    return "Done"
+    image = IMAGES.insert_one({'image':request.form.get('image')})
+    return jsonify(image_id=str(image.inserted_id))
 
 @APP.route('/approve/<id>')
 def approve(id):

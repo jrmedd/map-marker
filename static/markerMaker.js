@@ -35,6 +35,48 @@ const messageTypeMenu = document.getElementById("message-or-photo");
 const createMessageButton = document.getElementById("create-message");
 const createPhotoButton = document.getElementById("create-photo");
 
+const showAddButtons = () => {
+  addBinButton.style.opacity = 1;
+  addBinButton.style.pointerEvent - "unset";
+  addLitterButton.style.opacity = 1;
+  addLitterButton.style.pointerEvent - "unset";
+};
+
+const hideAddButtons = () => {
+  addBinButton.style.opacity = 0;
+  addBinButton.style.pointerEvent - "none";
+  addLitterButton.style.opacity = 0;
+  addLitterButton.style.pointerEvent - "none";
+};
+
+const showHeader = () => {
+  header.style.top = "0vh";
+};
+const showFooter = () => {
+  footer.style.bottom = "0vh";
+};
+
+const showMessageTypeMenu = () => {
+  messageTypeMenu.style.right = "0vh";
+};
+
+const hideHeader = () => {
+  header.style.top = "-100vh";
+};
+const hideFooter = () => {
+  footer.style.bottom = "-100vh";
+  document.getElementById("photo-preview").src = "";
+  document.getElementById("photo-preview").transform = "scale(0)";
+};
+
+const hideMessageTypeMenu = () => {
+  messageTypeMenu.style.right = "-100vh";
+};
+
+const showMessageCreator = () => {
+  showFooter();
+  hideMessageTypeMenu();
+};
 
 function initMap(callback) {
     map = new google.maps.Map(mapContainer, {
@@ -98,46 +140,6 @@ function initMap(callback) {
               });
         });
     
-    const showAddButtons = () => {
-      addBinButton.style.opacity = 1;
-      addBinButton.style.pointerEvent - "unset";
-      addLitterButton.style.opacity = 1;
-      addLitterButton.style.pointerEvent - "unset";
-    }
-
-    const hideAddButtons = () => {
-      addBinButton.style.opacity = 0;
-      addBinButton.style.pointerEvent - "none";
-      addLitterButton.style.opacity = 0;
-      addLitterButton.style.pointerEvent - "none";
-    };
-
-    const showHeader = () => {
-      header.style.top = "0vh";
-    }
-    const showFooter = () => {
-      footer.style.bottom = "0vh";
-    }
-
-    const showMessageTypeMenu = ()=>{
-      messageTypeMenu.style.right = "0vh"
-    }
-
-    const hideHeader = () => {
-      header.style.top = "-100vh";
-    };
-    const hideFooter = () => {
-      footer.style.bottom = "-100vh";
-    };
-
-    const hideMessageTypeMenu = () => {
-      messageTypeMenu.style.right = "-100vh";
-    };
-
-    const showMessageCreator = () => {
-      showFooter();
-      hideMessageTypeMenu();
-    };
 
     const hideMessageCreator = () => {
       editMode = false;
@@ -149,7 +151,6 @@ function initMap(callback) {
       userEntry.setMap(null);
     };
     const showMessageTypes = event => {
-      console.log(event);
       hideHeader();
       hideAddButtons();
       showMessageTypeMenu();
@@ -175,7 +176,8 @@ function initMap(callback) {
       document.getElementById("camera-container").style.pointerEvents = "unset";
     } 
 
-    createPhotoButton.addEventListener(()=>{
+    createPhotoButton.addEventListener("click",()=>{
+      hideMessageTypeMenu();
       showCamera();
       switchCamera();
     });

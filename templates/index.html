@@ -71,6 +71,7 @@
       <span id="message-input" name="message" type="text" rows="1" role="textbox" class="textarea" contenteditable="" tabindex="0" required></span>
       <label for="location-query" >Bin name...</label>
       <input type="hidden" id="litter-or-bin" value="litter" />
+      <input type="hidden" id="photo-id" />
       <button id="send-message" class="icon-button" type="submit">
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M2 2L14 8L2 14V2ZM3 9.36364L8 8L3 6.63636V3.70003L11.5999 8L3 12.3V9.36364Z" />
@@ -98,7 +99,9 @@
         </menu>
     </div>
   <aside id="overlay"><p>Tap anywhere on the map to position your <span id="litter-or-bin-message"></span></p></aside>
-  <aside id="outline"></aside>
+  <aside id="outline">
+    <img id="photo-preview" />
+  </aside>
   <script>
       const clientLat = {{ latitude }};
       const clientLng = {{ longitude }};

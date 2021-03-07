@@ -1,9 +1,12 @@
 let videoDevices = new Array();
 let cameraIndex = 0;
 let imageCapture;
+let imagePreview;
 let photoOptions = {
   fillLightMode: "off",
 };
+
+const cameraContainer = document.getElementById("camera-container");
 
 navigator.mediaDevices
   .enumerateDevices()
@@ -27,15 +30,28 @@ function switchCamera() {
 document.getElementById("switch-camera").addEventListener("click", switchCamera);
 
 document.getElementById("take-picture").addEventListener("click", ()=> {
+  cameraContainer.style.transform = "scale(0)";
   imageCapture.takePhoto().then((blob) => {
     let formData = new FormData();
     const imageData = URL.createObjectURL(blob);
     let resizedImage = resizedataURL(imageData, 480, 270).then(image=>{
       formData.append("image", image);
+      imagePreview = image;
       fetch(`${location.origin}/post-image`, {
         method: "POST",
         body: formData,
-      }).then((res) => res.status == 200 && URL.revokeObjectURL(imageData));
+      }).then((res) => res.status == 200 && res.json()).then(data=>{
+        console.log(data);
+        URL.revokeObjectURL(imageData);
+        cameraContainer.style.pointerEvents = "none";
+        cameraContainer.style.display = "none";
+        cameraContainer.style.transform = "scale(1)";
+        document.getElementById("photo-id").value = data.image_id;
+        document.getElementById("photo-preview").src = imagePreview;
+        document.getElementById("photo-preview").transform = "scale(1)"
+        imageCapture.track.stop();
+        showFooter();
+      });
     });
     
   });
