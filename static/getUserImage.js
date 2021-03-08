@@ -1,4 +1,4 @@
-let videoDevices = new Array();
+let videoDevices = ["environment", "environment"];
 let cameraIndex = 0;
 let imageCapture;
 let imagePreview;
@@ -9,6 +9,7 @@ let photoOptions = {
 const cameraContainer = document.getElementById("camera-container");
 const loadingScreen = document.getElementById("loading");
 
+/*
 navigator.mediaDevices
   .enumerateDevices()
   .then((foundDevices) => {
@@ -16,16 +17,21 @@ navigator.mediaDevices
     const videoOptions = document.getElementById("video-options");
   }
 );
-
+*/
 
 function switchCamera() {
   cameraIndex = (cameraIndex + 1) % videoDevices.length;
   navigator.mediaDevices
-  .getUserMedia({ video: { deviceId: videoDevices[cameraIndex].deviceId } })
+  .getUserMedia({ video: { facingMode: {exact: videoDevices[cameraIndex]}}})
   .then((stream) => {
     document.querySelector("video").srcObject = stream;
     const track = stream.getVideoTracks()[0];
     imageCapture = new ImageCapture(track);
+  }).catch(()=>{
+    loadingScreen.style.opacity = 0;
+    cameraContainer.style.pointerEvents = "none";
+    cameraContainer.style.display = "none";
+    showFooter();
   });
 }
 document.getElementById("switch-camera").addEventListener("click", switchCamera);
