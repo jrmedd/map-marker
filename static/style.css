@@ -45,6 +45,8 @@ footer {
     max-width: 85%;
     bottom: -100vh;
     margin-bottom: 1rem;
+    z-index: 999999999;
+
 }
 
 #outline, #overlay {
