@@ -12,7 +12,7 @@ import requests
 MONGO_URL = os.environ.get('MONGO_URL')
 
 CLIENT = MongoClient(MONGO_URL)
-DB = CLIENT['dataworkshop']
+DB = CLIENT['ibinnedit']
 BINS = DB['litter_bins']
 IMAGES = DB['images']
 
