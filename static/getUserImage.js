@@ -85,7 +85,7 @@ function resizedataURL(datas, wantedWidth, wantedHeight){
             canvas.height = img.height * scaleFactor;
 
             // We resize the image with the canvas method drawImage();
-            ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
+            ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 
             var dataURI = canvas.toDataURL('image/jpeg', 0.5);
 
