@@ -83,6 +83,39 @@ footer {
     font-size: 1.25rem;
 }
 
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.25);
+    z-index: 99999999;
+    transition: all .3s ease;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading > img {
+    width:  8rem;
+    animation-name: spin;
+    animation-timing-function: linear;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .sr-only {
     border: 0;
     clip: rect(1px, 1px, 1px, 1px);
@@ -241,6 +274,15 @@ button {
     left: 50%;
     max-width: 50ch;
     transform: translate(-50%, -50%);
+}
+
+#found-message-container>div {
+    padding: .5rem;
+}
+
+#found-message-image {
+    width: 100%;
+    border-radius: 8px;
 }
 
 #message-or-photo {

@@ -25,6 +25,7 @@ const footer = document.getElementsByTagName("footer")[0];
 
 const foundMessageContainer = document.getElementById("found-message-container");
 const foundMessageContent = document.getElementById("found-message-content");
+const foundMessageImage = document.getElementById("found-message-image");
 const closeFoundMessageButton = document.getElementById("close-found-message");
 
 const overlay = document.getElementById("overlay");
@@ -94,6 +95,7 @@ function initMap(callback) {
             if (userEntry != undefined) {
                 userEntry.setMap(null)
             }
+            showMessageTypeMenu();
             userEntry = new google.maps.Marker({
               position: event.latLng,
               map: map,
@@ -109,7 +111,13 @@ function initMap(callback) {
           event.preventDefault();
           const lat = userEntry.position.lat();
           const lng = userEntry.position.lng();
-          const submission = {litterOrBin: addingLitterOrBin,message:messageInput.textContent, lat: lat, lng: lng }
+          const submission = {
+            type: addingLitterOrBin,
+            message:messageInput.textContent, 
+            lat: lat, 
+            lng: lng, 
+            photoId: document.getElementById("photo-id").value
+          }
           fetch(`${location.origin}/message`, {
             method: "POST",
             headers: {
@@ -150,20 +158,20 @@ function initMap(callback) {
       map.setOptions({ draggable: true, draggableCursor: "grab" });
       userEntry.setMap(null);
     };
-    const showMessageTypes = event => {
+    const showMessageTypes = marking => {
+      document.getElementById("photo-id").value = null;
       hideHeader();
       hideAddButtons();
-      showMessageTypeMenu();
-      addingLitterOrBin = event.target.value;
-      document.getElementById("litter-or-bin-message").innerText = addingLitterOrBin;
-      litterOrBin.setAttribute("value", addingLitterOrBin);
+      addingLitterOrBin = marking;
+      document.getElementById("litter-or-bin-message").innerText = marking;
+      litterOrBin.setAttribute("value", marking);
       overlay.style.opacity = 1;
       editMode = true;
       pageOutline.style.opacity = 1;
       map.setOptions({ draggable: false, draggableCursor: "crosshair" });
     }
-    addBinButton.addEventListener("click", showMessageTypes);
-    addLitterButton.addEventListener("click", showMessageTypes);
+    addBinButton.addEventListener("click", ()=>showMessageTypes("bin"));
+    addLitterButton.addEventListener("click", ()=>showMessageTypes("litter"));
     closeButton.addEventListener("click", hideMessageCreator);
 
     createMessageButton.addEventListener("click", showMessageCreator);
@@ -172,6 +180,7 @@ function initMap(callback) {
     });
 
     const showCamera = () =>{
+      loadingScreen.style.opacity = 1;
       document.getElementById("camera-container").style.display = "flex";
       document.getElementById("camera-container").style.pointerEvents = "unset";
     } 
@@ -201,6 +210,10 @@ const fetchMarkers = () => {
         newMarker.addListener("click", () => { 
           foundMessageContainer.style.opacity = 1;
           foundMessageContent.textContent = litterBin.message;
+          foundMessageImage.src = "";
+          if (litterBin.photoId.length > 0) {
+            fetch(`${location.origin}/image?id=${litterBin.photoId}`).then(res=>res.status == 200 && res.json()).then(data=>foundMessageImage.src=data.image);
+          }
         }
         );
         });

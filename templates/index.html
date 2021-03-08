@@ -37,7 +37,10 @@
       </svg>
     </button>
     <aside id="found-message-container">
-      <p id="found-message-content"></p>
+      <div>
+        <p id="found-message-content"></p>
+        <img id="found-message-image" />
+      </div>
       <button id="close-found-message" class="icon-button">
       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M3.75737 3.75736C3.36684 4.14788 3.36684 4.78105 3.75737 5.17157L6.58579 8L3.75737 10.8284C3.36684 11.219 3.36684 11.8521 3.75737 12.2426C4.14789 12.6332 4.78105 12.6332 5.17158 12.2426L8.00001 9.41421L10.8284 12.2426C11.219 12.6332 11.8521 12.6332 12.2426 12.2426C12.6332 11.8521 12.6332 11.219 12.2426 10.8284L9.41422 8L12.2426 5.17157C12.6332 4.78105 12.6332 4.14788 12.2426 3.75736C11.8521 3.36684 11.219 3.36683 10.8284 3.75736L8.00001 6.58579L5.17158 3.75736C4.78105 3.36684 4.14789 3.36684 3.75737 3.75736Z" />
@@ -101,6 +104,9 @@
   <aside id="overlay"><p>Tap anywhere on the map to position your <span id="litter-or-bin-message"></span></p></aside>
   <aside id="outline">
     <img id="photo-preview" />
+  </aside>
+  <aside id="loading">
+    <img src="{{ url_for('static', filename='bee.svg') }}" />
   </aside>
   <script>
       const clientLat = {{ latitude }};

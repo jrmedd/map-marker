@@ -49,10 +49,15 @@ def litter_bins():
     return jsonify(litterBins=litter_bins)
 
 
-@APP.route('/post-image', methods=["POST"])
+@APP.route('/image', methods=["GET","POST"])
 def post_image():
-    image = IMAGES.insert_one({'image':request.form.get('image')})
-    return jsonify(image_id=str(image.inserted_id))
+    if request.method  == "GET":
+        image = IMAGES.find_one(
+            {'_id': ObjectId(request.args.get('id'))}, {'_id': 0})
+        return jsonify(image=image.get('image'))
+    if request.method == "POST":
+        image = IMAGES.insert_one({'image':request.form.get('image')})
+        return jsonify(image_id=str(image.inserted_id))
 
 @APP.route('/approve/<id>')
 def approve(id):

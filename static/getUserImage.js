@@ -7,6 +7,7 @@ let photoOptions = {
 };
 
 const cameraContainer = document.getElementById("camera-container");
+const loadingScreen = document.getElementById("loading");
 
 navigator.mediaDevices
   .enumerateDevices()
@@ -37,12 +38,12 @@ document.getElementById("take-picture").addEventListener("click", ()=> {
     let resizedImage = resizedataURL(imageData, 480, 270).then(image=>{
       formData.append("image", image);
       imagePreview = image;
-      fetch(`${location.origin}/post-image`, {
+      fetch(`${location.origin}/image`, {
         method: "POST",
         body: formData,
       }).then((res) => res.status == 200 && res.json()).then(data=>{
-        console.log(data);
         URL.revokeObjectURL(imageData);
+        loadingScreen.style.opacity = 0;
         cameraContainer.style.pointerEvents = "none";
         cameraContainer.style.display = "none";
         cameraContainer.style.transform = "scale(1)";
