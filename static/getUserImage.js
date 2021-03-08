@@ -80,8 +80,9 @@ function resizedataURL(datas, wantedWidth, wantedHeight){
             var ctx = canvas.getContext('2d');
 
             // We set the dimensions at the wanted size.
-            canvas.width = wantedWidth;
-            canvas.height = wantedHeight;
+            let scaleFactor = 1/(img.width/wantedWidth);
+            canvas.width = img.width * scaleFactor;
+            canvas.height = img.height * scaleFactor;
 
             // We resize the image with the canvas method drawImage();
             ctx.drawImage(this, 0, 0, wantedWidth, wantedHeight);
