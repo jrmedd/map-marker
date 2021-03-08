@@ -19,6 +19,10 @@ IMAGES = DB['images']
 MAPS_API = os.environ.get('MAPS_API')
 PLACES_API_KEY = os.environ.get('PLACES_API')
 
+
+IP_STACK_URL = "http://api.ipstack.com/%s?access_key=%s"
+IP_STACK_KEY = "760b8fc8e1d3bd73f4653f9e96d91e45"
+
 APP = Flask(__name__)
 
 CORS(APP)
