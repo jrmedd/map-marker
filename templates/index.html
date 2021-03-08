@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manchester – bins</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?2" />
-    <script src="{{ url_for('static', filename='mapStyle.js')}}"> </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?11" />
+    <script src="{{ url_for('static', filename='mapStyle.js')}}?11"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
 </head>
 <body>
@@ -95,7 +95,7 @@
             <dd id="flash-setting">off</dd>
         </dl-->
         <video autoplay playsinline></video>
-        <menu type="toolbar">
+        <menu id="camera-controls" type="toolbar">
             <button class="camera-button" aria-label="Switch camera" id="switch-camera"><img src="{{ url_for('static', filename='switch.svg') }}" /></button>
             <button class="camera-button" aria-label="Take picture" id="take-picture"><img src="{{ url_for('static', filename='capture.svg') }}" /></button>
             <!--button class="camera-button" aria-label="Toggle flash" id="toggle-flash"><img src="{{ url_for('static', filename='flash.svg') }}" /></button-->
@@ -112,7 +112,7 @@
       const clientLat = {{ latitude }};
       const clientLng = {{ longitude }};
     </script>
-  <script src="{{ url_for('static', filename='markerMaker.js') }}?2"></script>
-  <script src="{{ url_for('static', filename='getUserImage.js') }}"></script>
+  <script src="{{ url_for('static', filename='markerMaker.js') }}?11"></script>
+  <script src="{{ url_for('static', filename='getUserImage.js') }}?11"></script>
 </body>
 </html>
