@@ -1,4 +1,4 @@
-let videoDevices = ["environment", "environment"];
+let videoDevices = ["environment", "user"];
 let cameraIndex = 0;
 let imageCapture;
 let imagePreview;
@@ -22,7 +22,7 @@ navigator.mediaDevices
 function switchCamera() {
   cameraIndex = (cameraIndex + 1) % videoDevices.length;
   navigator.mediaDevices
-  .getUserMedia({ video: { facingMode: {exact: videoDevices[cameraIndex]}}})
+  .getUserMedia({ video: { facingMode: {ideal: videoDevices[cameraIndex]}}})
   .then((stream) => {
     document.querySelector("video").srcObject = stream;
     const track = stream.getVideoTracks()[0];
