@@ -1,6 +1,6 @@
 let videoDevices;
 let cameraIndex = -1;
-let imageCapture;
+let imageCapture = new MediaStream();
 let imagePreview;
 let photoOptions = {
   fillLightMode: "off",
@@ -9,24 +9,23 @@ let photoOptions = {
 const cameraContainer = document.getElementById("camera-container");
 const loadingScreen = document.getElementById("loading");
 
-
+navigator.mediaDevices.getUserMedia({ video: true}).then(()=>
 navigator.mediaDevices
   .enumerateDevices()
   .then((foundDevices) => {
     videoDevices = foundDevices.filter((device) => device.kind === "videoinput").map(device=>device.deviceId);
     cameraIndex = videoDevices.length - 1;
   }
-);
+));
 
 function switchCamera() {
   cameraIndex = (cameraIndex + 1) % videoDevices.length;
-  imageCapture && imageCapture.track.stop();
+  document.querySelector("video").srcObject && document.querySelector("video").srcObject.getVideoTracks()[0].stop();
   navigator.mediaDevices
   .getUserMedia({ video: { deviceId:videoDevices[cameraIndex]}})
   .then((stream) => {
     document.querySelector("video").srcObject = stream;
-    const track = stream.getVideoTracks()[0];
-    imageCapture = new ImageCapture(track);
+    imageCapture = stream;
   }).catch(()=>{
     loadingScreen.style.opacity = 0;
     cameraContainer.style.pointerEvents = "none";
@@ -38,30 +37,35 @@ document.getElementById("switch-camera").addEventListener("click", switchCamera)
 
 document.getElementById("take-picture").addEventListener("click", ()=> {
   cameraContainer.style.transform = "scale(0)";
-  imageCapture.takePhoto().then((blob) => {
+  getBlobFromMediaStream(imageCapture).then(blob=> {
     let formData = new FormData();
     const imageData = URL.createObjectURL(blob);
-    let resizedImage = resizedataURL(imageData, 480, 270).then(image=>{
+    let resizedImage = resizedataURL(imageData, 480, 270).then((image) => {
       formData.append("image", image);
       imagePreview = image;
       fetch(`${location.origin}/image`, {
         method: "POST",
         body: formData,
-      }).then((res) => res.status == 200 && res.json()).then(data=>{
-        URL.revokeObjectURL(imageData);
-        loadingScreen.style.opacity = 0;
-        cameraContainer.style.pointerEvents = "none";
-        cameraContainer.style.display = "none";
-        cameraContainer.style.transform = "scale(1)";
-        document.getElementById("photo-id").value = data.image_id;
-        document.getElementById("photo-preview").src = imagePreview;
-        document.getElementById("photo-preview").transform = "scale(1)"
-        imageCapture.track.stop();
-        cameraIndex = videoDevices.length - 1;
-        showFooter();
-      });
+      })
+        .then((res) => res.status == 200 && res.json())
+        .then((data) => {
+          URL.revokeObjectURL(imageData);
+          loadingScreen.style.opacity = 0;
+          cameraContainer.style.pointerEvents = "none";
+          cameraContainer.style.display = "none";
+          cameraContainer.style.transform = "scale(1)";
+          document.getElementById("photo-id").value = data.image_id;
+          document.getElementById("photo-preview").src = imagePreview;
+          document.getElementById("photo-preview").transform = "scale(1)";
+          document.querySelector("video").srcObject &&
+            document
+              .querySelector("video")
+              .srcObject.getVideoTracks()[0]
+              .stop();
+          cameraIndex = videoDevices.length - 1;
+          showFooter();
+        });
     });
-    
   });
 }
 )
@@ -98,4 +102,34 @@ function resizedataURL(datas, wantedWidth, wantedHeight){
         img.src = datas;
 
     })
+}
+
+function getBlobFromMediaStream(stream) {
+  if ("ImageCapture" in window) {
+    const videoTrack = stream.getVideoTracks()[0];
+    const imageCapture = new ImageCapture(videoTrack);
+    return imageCapture.takePhoto();
+  } else {
+    const video = document.createElement("video");
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    video.srcObject = stream;
+
+    return new Promise((resolve, reject) => {
+      video.addEventListener("loadeddata", async () => {
+        const { videoWidth, videoHeight } = video;
+        canvas.width = videoWidth;
+        canvas.height = videoHeight;
+
+        try {
+          await video.play();
+          context.drawImage(video, 0, 0, videoWidth, videoHeight);
+          canvas.toBlob(resolve, "image/png");
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+  }
 }
