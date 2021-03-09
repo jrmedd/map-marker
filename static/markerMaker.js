@@ -1,6 +1,8 @@
 let map;
 
 let userEntry;
+let userPosition;
+let userTracking;
 let addingLitterOrBin = "bin";
 let editMode = false;
 
@@ -23,6 +25,8 @@ const addLitterButton = document.getElementById("add-litter");
 const closeButton = document.getElementById("close-message");
 const footer = document.getElementsByTagName("footer")[0];
 
+const findMeButton = document.getElementById("find-me");
+
 const foundMessageContainer = document.getElementById("found-message-container");
 const foundMessageContent = document.getElementById("found-message-content");
 const foundMessageImage = document.getElementById("found-message-image");
@@ -35,6 +39,7 @@ const messageTypeMenu = document.getElementById("message-or-photo");
 
 const createMessageButton = document.getElementById("create-message");
 const createPhotoButton = document.getElementById("create-photo");
+
 
 const showAddButtons = () => {
   addBinButton.style.opacity = 1;
@@ -90,70 +95,112 @@ function initMap(callback) {
       fullscreenControl: false,
       disableDefaultUI: true,
     });
-        map.addListener("click", event=> {
-        if (editMode) {
-            if (userEntry != undefined) {
-                userEntry.setMap(null)
-            }
-            const addingIcon = addingLitterOrBin == "bin" ? newBinIcon : newLitterIcon;
-            showMessageTypeMenu();
-            userEntry = new google.maps.Marker({
-              position: event.latLng,
-              map: map,
-              icon: {
-                ...addingIcon,
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(8, 8),
-                strokeColor: icons.new.color,
-              },
-              draggable: true,
-              raiseOnDrag: false,
-            });
-            overlay.style.opacity = 0;
+    map.addListener("click", event=> {
+    if (editMode) {
+        if (userEntry != undefined) {
+            userEntry.setMap(null)
         }
-          foundMessageContainer.style.opacity = 0;
+        const addingIcon = addingLitterOrBin == "bin" ? newBinIcon : newLitterIcon;
+        showMessageTypeMenu();
+        userEntry = new google.maps.Marker({
+          position: event.latLng,
+          map: map,
+          icon: {
+            ...addingIcon,
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(8, 8),
+            strokeColor: icons.new.color,
+          },
+          draggable: true,
+          raiseOnDrag: false,
         });
-        messageForm.addEventListener("submit", event => {
-          event.preventDefault();
-          const lat = userEntry.position.lat();
-          const lng = userEntry.position.lng();
-          const submission = {
-            type: addingLitterOrBin,
-            message:messageInput.textContent, 
-            lat: lat, 
-            lng: lng, 
-            photoId: document.getElementById("photo-id").value
-          }
-          fetch(`${location.origin}/message`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(submission)
+        overlay.style.opacity = 0;
+    }
+      foundMessageContainer.style.opacity = 0;
+    });
+    messageForm.addEventListener("submit", event => {
+      event.preventDefault();
+      const lat = userEntry.position.lat();
+      const lng = userEntry.position.lng();
+      const submission = {
+        type: addingLitterOrBin,
+        message:messageInput.textContent, 
+        lat: lat, 
+        lng: lng, 
+        photoId: document.getElementById("photo-id").value
+      }
+      fetch(`${location.origin}/message`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submission)
+      });
+      editMode = false;
+      pageOutline.style.opacity = 0;
+      hideFooter();
+      showHeader();
+      showAddButtons();
+      map.setOptions({ draggable: true, draggableCursor: "grab" });
+      messageInput.textContent = ""; 
+      userEntry.setMap(null);
+    })
+    searchForm.addEventListener("submit", event => {
+      event.preventDefault();
+      locationQuery.value.length > 0 &&
+        fetch(`${location.origin}/search?query=${locationQuery.value}&locationbias=${map.center.lat()},${map.center.lng()}`)
+          .then((response) => response.status == 200 && response.json())
+          .then((data) => {
+            if (data.result.candidates.length > 0) {
+                const newLocation = data.result.candidates[0].geometry.location;
+                map.setCenter(new google.maps.LatLng(newLocation.lat, newLocation.lng));
+                map.setZoom(20)
+            };
           });
-          editMode = false;
-          pageOutline.style.opacity = 0;
-          hideFooter();
-          showHeader();
-          showAddButtons();
-          map.setOptions({ draggable: true, draggableCursor: "grab" });
-          messageInput.textContent = ""; 
-          userEntry.setMap(null);
-        })
-        searchForm.addEventListener("submit", event => {
-          event.preventDefault();
-          locationQuery.value.length > 0 &&
-            fetch(`${location.origin}/search?query=${locationQuery.value}&locationbias=${map.center.lat()},${map.center.lng()}`)
-              .then((response) => response.status == 200 && response.json())
-              .then((data) => {
-                if (data.result.candidates.length > 0) {
-                    const newLocation = data.result.candidates[0].geometry.location;
-                    map.setCenter(new google.maps.LatLng(newLocation.lat, newLocation.lng));
-                    map.setZoom(20)
-                };
-              });
-        });
+    });
     
+    findMeButton.addEventListener("click", ()=>{
+      findMeButton.classList.toggle('spin');
+      findMeButton.setAttribute('disabled', true);
+      let userFound = false;
+      navigator.geolocation.clearWatch(userTracking);
+      if ('geolocation' in navigator) {
+        userTracking = navigator.geolocation.watchPosition(location=> {
+          if (userPosition != undefined) {
+            userPosition.setMap(null);
+          }
+          let userIcon = location.heading ? locationIcon : locationIconWithHeading;
+          userPosition = new google.maps.Marker({
+            position: {
+              lat: location.coords.latitude,
+              lng: location.coords.longitude,
+            },
+            map: map,
+            icon: {
+              ...userIcon,
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(8, 8),
+              fillColor: "#1900FF",
+              strokeColor: "#ffffff",
+              strokeWeight: 1,
+              rotation: location.heading || 0,
+              className: "userLocation",
+            },
+            draggable: false,
+            raiseOnDrag: false,
+          });
+          if (!userFound) {
+            findMeButton.classList.toggle('spin');
+            findMeButton.removeAttribute("disabled");
+            map.setCenter(
+              new google.maps.LatLng(location.coords.latitude, location.coords.longitude)
+            );
+            map.setZoom(20);
+            userFound = true;
+          }
+        })
+      }
+    })
 
     const hideMessageCreator = () => {
       editMode = false;

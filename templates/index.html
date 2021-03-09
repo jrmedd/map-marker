@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manchester – bins</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?21" />
-    <script src="{{ url_for('static', filename='mapStyle.js')}}?21"> </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?22" />
+    <script src="{{ url_for('static', filename='mapStyle.js')}}?22"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
 </head>
 <body>
@@ -14,6 +14,13 @@
     <form id="search">
       <input id="location-query" name="location-query" type="text" required />
       <label for="location-query" >Find a location</label>
+      <button id="find-me" type="button" class="icon-button">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="icon" d="M8 10C9.10458 10 10 9.10458 10 8C10 6.89542 9.10458 6 8 6C6.89542 6 6 6.89542 6 8C6 9.10458 6.89542 10 8 10Z" />
+          <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M8 0C7.44772 0 7 0.447723 7 1V2C7 2.02774 7.00113 2.05524 7.00336 2.0824C4.48813 2.5029 2.5029 4.48813 2.0824 7.00336C2.07053 7.00238 2.05859 7.00162 2.04657 7.00107C2.03113 7.00037 2.01559 7 2 7H1C0.447723 7 0 7.44772 0 8C0 8.55228 0.447723 9 1 9H2C2.02774 9 2.05524 8.99887 2.0824 8.99664C2.5029 11.5119 4.48813 13.4971 7.00336 13.9176C7.00229 13.9306 7.00146 13.9437 7.00092 13.9568C7.00031 13.9712 7 13.9855 7 14V15C7 15.5523 7.44772 16 8 16C8.55228 16 9 15.5523 9 15V14C9 13.9723 8.99887 13.9448 8.99664 13.9176C11.5119 13.4971 13.4971 11.5119 13.9176 8.99664C13.9448 8.99887 13.9723 9 14 9H15C15.5523 9 16 8.55228 16 8C16 7.44772 15.5523 7 15 7H14C13.9723 7 13.9448 7.00113 13.9176 7.00336C13.4971 4.48813 11.5119 2.5029 8.99664 2.0824C8.99887 2.05524 9 2.02774 9 2V1C9 0.447723 8.55228 0 8 0ZM12 8C12 10.2091 10.2091 12 8 12C5.79086 12 4 10.2091 4 8C4 5.79086 5.79086 4 8 4C10.2091 4 12 5.79086 12 8Z" />
+        </svg>
+        <span class="sr-only">Find me</span>
+      </button>
       <button class="icon-button" type="submit">
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path class="icon" fill-rule="evenodd" clip-rule="evenodd" d="M8 6C8 7.10457 7.10457 8 6 8C4.89543 8 4 7.10457 4 6C4 4.89543 4.89543 4 6 4C7.10457 4 8 4.89543 8 6ZM8.03197 9.44618C7.43645 9.79807 6.74181 10 6 10C3.79086 10 2 8.20914 2 6C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 6.74181 9.79807 7.43645 9.44618 8.03197L13.1986 11.7844C13.5891 12.1749 13.5891 12.808 13.1986 13.1986C12.808 13.5891 12.1749 13.5891 11.7844 13.1986L8.03197 9.44618Z" />
@@ -112,7 +119,7 @@
       const clientLat = {{ latitude }};
       const clientLng = {{ longitude }};
     </script>
-  <script src="{{ url_for('static', filename='markerMaker.js') }}?21"></script>
-  <script src="{{ url_for('static', filename='getUserImage.js') }}?21"></script>
+  <script src="{{ url_for('static', filename='markerMaker.js') }}?22"></script>
+  <script src="{{ url_for('static', filename='getUserImage.js') }}?22"></script>
 </body>
 </html>

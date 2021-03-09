@@ -131,6 +131,10 @@ footer {
     word-wrap: normal !important;
 }
 
+button:disabled {
+    background: var(--water);
+}
+
 .icon-button, .icon-text-button {
     min-width: 2.5rem;
     max-width: 2.5rem;
@@ -142,6 +146,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: .3s ease all;
 }
 
 .icon-text-button {
@@ -183,7 +188,7 @@ button:active svg {
     align-items: flex-end;
 }
 
-#search > * + *, #message > * + * {
+#search > * + button, #message > * + button {
     margin-left: 1rem;
 }
 
@@ -205,6 +210,7 @@ label {
     top: 0px;
     left: 0px;
     margin-top: .5rem;
+    margin-left: 0;
     font-size: 1.25rem;
     transition: all 0.2s ease;
     pointer-events: none;
@@ -391,4 +397,20 @@ dl > * {
     margin: .1rem;
     padding: 0;
     display: inline;
+}
+
+.spin {
+    animation-name: spin;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

@@ -30,6 +30,20 @@ const newLitterIcon = {
   strokeWeight: 0,
 };
 
+const locationIcon = {
+  scale: 2,
+  path:
+    "M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z M6.26926 2.30765C6.80856 2.10867 7.39159 2 8 2C8.60841 2 9.19144 2.10867 9.73074 2.30765L8 0L6.26926 2.30765Z",
+  fillOpacity: 1,
+  strokeWeight: 0,
+};
+
+const locationIconWithHeading = {
+  ...locationIcon,
+  path:
+    "M8 12C10.2091 12 12 10.2091 12 8C12 5.79086 10.2091 4 8 4C5.79086 4 4 5.79086 4 8C4 10.2091 5.79086 12 8 12Z",
+};
+
 const icons = {
   default: { color: "#007C7C" },
   hover: { color: "#C0E8E8" },
