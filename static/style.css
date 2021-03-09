@@ -154,7 +154,7 @@ footer {
     border-radius: 2rem;
 }
 
-.icon-text-button > * + * {
+.icon-text-button > svg {
     margin-left: .5rem;
 }
 
