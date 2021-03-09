@@ -49,8 +49,15 @@ def admin():
 
 @APP.route('/litter-bins', methods=["GET"])    
 def litter_bins():
-    litter_bins = list(BINS.find({'approved': True}, {'_id':0}))
+    litter_bins = list(BINS.find({'type':'bin','approved': True}, {'approved':0, '_id':0}))
     return jsonify(litterBins=litter_bins)
+
+
+@APP.route('/litter', methods=["GET"])
+def litter():
+    litter = list(
+        BINS.find({'type': 'litter', 'approved': True}, {'approved': 0, '_id': 0}))
+    return jsonify(litter=litter)
 
 
 @APP.route('/image', methods=["GET","POST"])
@@ -70,7 +77,7 @@ def approve(id):
 
 @APP.route('/message', methods=["POST"])
 def message():
-    BINS.insert_one({**{"approved": False},**request.get_json()})
+    BINS.insert_one({**{"approved": False, "timestamp":datetime.datetime.now()},**request.get_json()})
     return jsonify(received=True)
 
 @APP.route('/search', methods=["GET"])
