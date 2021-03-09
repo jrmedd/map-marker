@@ -189,7 +189,7 @@ button:disabled {
     background: var(--water);
 }
 
-.icon-button, .icon-text-button {
+.button, .icon-button, .icon-text-button {
     min-width: 2.5rem;
     max-width: 2.5rem;
     min-height: 2.5rem;
@@ -203,6 +203,7 @@ button:disabled {
     transition: .3s ease all;
     flex-basis: 2.5rem;
 }
+
 
 .icon-text-button {
     padding-left: 1rem;
@@ -235,22 +236,40 @@ button:active svg {
     outline: none;
 }
 
-#map-options {
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    margin: 2rem;
-}
 
-#add-litter-or-bin {
+.lower-map-menu {
+    bottom: 0;
     position: fixed;
+    margin: 2rem;
+    background: none;
+    transition: .3s all ease;
     display: flex;
     flex-flow: column;
+    background: none;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+#map-options {
+    left: 0;
+}
+
+.map-option {
+    margin-left: -100vh;
+}
+
+
+#message-or-photo {
+    right: -100vh;
+    align-items: flex-end;
+}
+
+
+#add-litter-or-bin {
     align-items: flex-end;
     right: 0px;
     bottom: 0px;
     margin: 2rem;
-    background: none;
 }
 
 
@@ -285,19 +304,6 @@ button {
 #found-message-image {
     width: 100%;
     border-radius: 8px;
-}
-
-#message-or-photo {
-    right: -100vw;
-    position: fixed;
-    bottom:  0;
-    margin-bottom: 1rem; 
-    margin-right:1rem;
-    background: none;
-    transition: .3s all ease;
-    display: flex;
-    flex-flow: column;
-    align-items: flex-end;
 }
 
 li {

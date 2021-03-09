@@ -17,10 +17,11 @@ const locationQuery = document.getElementById("location-query");
 const messageForm = document.getElementById("message");
 const messageInput = document.getElementById("message-input");
 
-const addBinButton = document.getElementById("add-bin");
 const header = document.getElementsByTagName("header")[0];
 
+const addMenu = document.getElementById("add-litter-or-bin");
 const addLitterButton = document.getElementById("add-litter");
+const addBinButton = document.getElementById("add-bin");
 
 const closeButton = document.getElementById("close-message");
 const footer = document.getElementsByTagName("footer")[0];
@@ -40,19 +41,19 @@ const messageTypeMenu = document.getElementById("message-or-photo");
 const createMessageButton = document.getElementById("create-message");
 const createPhotoButton = document.getElementById("create-photo");
 
+const mapOptionsButton = document.getElementById("map-options-button");
+const mapOptionsMenu = document.getElementById("map-options");
+let optionsVisible = false;
+
 
 const showAddButtons = () => {
-  addBinButton.style.opacity = 1;
-  addBinButton.style.pointerEvent - "unset";
-  addLitterButton.style.opacity = 1;
-  addLitterButton.style.pointerEvent - "unset";
-};
+ addMenu.style.right = "0px";
+  mapOptionsMenu.style.left = "0px";
+}
 
 const hideAddButtons = () => {
-  addBinButton.style.opacity = 0;
-  addBinButton.style.pointerEvent - "none";
-  addLitterButton.style.opacity = 0;
-  addLitterButton.style.pointerEvent - "none";
+  addMenu.style.right = "-100vh";
+  mapOptionsMenu.style.left = "-100vh";
 };
 
 const showHeader = () => {
@@ -247,6 +248,12 @@ function initMap(callback) {
     callback();
 }
 
+mapOptionsButton.addEventListener("click", ()=> {
+  toggleMapOptions(optionsVisible ? "hide" : "show")
+  optionsVisible = !optionsVisible;
+})
+
+
 const endpoints = [
   {
     name: "litterBins",
@@ -260,20 +267,36 @@ const endpoints = [
   },
 ];
 
-let heatmapData = {
+let markers = {
   litterBins: {
     data: [],
     gradient: [],
+    heatmapData: [],
   },
   litter: {
     data: [],
-    gradient: []
-  }
+    gradient: [],
+    heatmapData: [],
+  },
 };
 
-let markers = {
-  litterBins: [],
-  litter: []
+for (let option of document.getElementsByClassName("map-option")) {
+  option.addEventListener("click", (event) => {
+    let toToggle = option.getAttribute("data-display");
+    if (option.getAttribute("data-toggle") == "marker") {
+      toggleMarkers(markers[toToggle].data);
+    } else if (option.getAttribute("data-toggle") == "heatmap") {
+      toggleHeatMap(markers[toToggle].heatmapData);
+    }
+  });
+}
+
+const toggleMapOptions = (showOrHide) => {
+  const mapOptions = document.getElementsByClassName("map-option");
+  for (let i = 0; i < mapOptions.length; i++) {
+    mapOptions[i].style.transitionDelay = `${0.2 + i * 0.05}s`;
+    mapOptions[i].style.marginLeft = showOrHide == "show" ? 0 : "-100vh";
+  }
 };
 
 const fetchMarkers = () => {
@@ -319,8 +342,8 @@ const fetchMarkers = () => {
                 .then((data) => (foundMessageImage.src = data.image));
             }
           });
-          markers[endpoint.name].push(newMarker);
-          heatmapData[endpoint.name].data.push(new google.maps.LatLng(litterBin.lat,litterBin.lng));
+          markers[endpoint.name].data.push(newMarker);
+          markers[endpoint.name].heatmapData.push(new google.maps.LatLng(litterBin.lat,litterBin.lng));
           newMarker.setMap(map);
         });
       }); 
@@ -336,7 +359,8 @@ const toggleHeatMap = data => {
     data: data,
     radius: 80
   });
-  heatmap.setMap(map);
+  heatmap.setMap(!heatmap.getMap() ? map: null);
+  return heatmap;
 }
 
 
