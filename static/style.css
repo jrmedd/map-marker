@@ -235,20 +235,23 @@ button:active svg {
     outline: none;
 }
 
-#add-bin {
-    position: fixed;
-    right: 0px;
-    bottom: 0px;
-    margin: 2rem;
-}
-
-#add-litter {
+#map-options {
     position: fixed;
     left: 0px;
     bottom: 0px;
     margin: 2rem;
 }
 
+#add-litter-or-bin {
+    position: fixed;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-end;
+    right: 0px;
+    bottom: 0px;
+    margin: 2rem;
+    background: none;
+}
 
 
 
@@ -296,8 +299,6 @@ button {
     flex-flow: column;
     align-items: flex-end;
 }
-
-
 
 li {
     list-style: none;
@@ -365,7 +366,6 @@ menu > * + * {
 .camera-button > img {
     width: 100%;
 }
-
 
 #camera-container dl {
     position: fixed;

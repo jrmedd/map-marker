@@ -260,7 +260,21 @@ const endpoints = [
   },
 ];
 
+let heatmapData = {
+  litterBins: {
+    data: [],
+    gradient: [],
+  },
+  litter: {
+    data: [],
+    gradient: []
+  }
+};
 
+let markers = {
+  litterBins: [],
+  litter: []
+};
 
 const fetchMarkers = () => {
   endpoints.forEach(endpoint=>{
@@ -271,7 +285,6 @@ const fetchMarkers = () => {
         data.markers.map((litterBin) => {
           let newMarker = new google.maps.Marker({
             position: { lat: litterBin.lat, lng: litterBin.lng },
-            map: map,
             icon: {
               ...endpoint.icon,
               fillColor: icons.default.color,
@@ -306,11 +319,26 @@ const fetchMarkers = () => {
                 .then((data) => (foundMessageImage.src = data.image));
             }
           });
+          markers[endpoint.name].push(newMarker);
+          heatmapData[endpoint.name].data.push(new google.maps.LatLng(litterBin.lat,litterBin.lng));
+          newMarker.setMap(map);
         });
       }); 
   })
-    
 };
+
+const toggleMarkers = markers => {
+  markers.forEach(marker=>marker.setMap(!marker.getMap() ? map : null))
+}
+
+const toggleHeatMap = data => {
+  let heatmap = new google.maps.visualization.HeatmapLayer({
+    data: data,
+    radius: 80
+  });
+  heatmap.setMap(map);
+}
+
 
 function init() {
     initMap(fetchMarkers)
