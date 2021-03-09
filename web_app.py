@@ -50,14 +50,14 @@ def admin():
 @APP.route('/litter-bins', methods=["GET"])    
 def litter_bins():
     litter_bins = list(BINS.find({'type':'bin','approved': True}, {'approved':0, '_id':0}))
-    return jsonify(litterBins=litter_bins)
+    return jsonify(markers=litter_bins)
 
 
 @APP.route('/litter', methods=["GET"])
 def litter():
     litter = list(
         BINS.find({'type': 'litter', 'approved': True}, {'approved': 0, '_id': 0}))
-    return jsonify(litter=litter)
+    return jsonify(markers=litter)
 
 
 @APP.route('/image', methods=["GET","POST"])

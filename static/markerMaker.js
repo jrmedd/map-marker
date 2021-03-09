@@ -95,13 +95,19 @@ function initMap(callback) {
             if (userEntry != undefined) {
                 userEntry.setMap(null)
             }
+            const addingIcon = addingLitterOrBin == "bin" ? newBinIcon : newLitterIcon;
             showMessageTypeMenu();
             userEntry = new google.maps.Marker({
               position: event.latLng,
               map: map,
-              icon: { ...newBinIcon, anchor: new google.maps.Point(11, 22), strokeColor: icons.new.color},
+              icon: {
+                ...addingIcon,
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(8, 8),
+                strokeColor: icons.new.color,
+              },
               draggable: true,
-              raiseOnDrag: false
+              raiseOnDrag: false,
             });
             overlay.style.opacity = 0;
         }
@@ -194,30 +200,69 @@ function initMap(callback) {
     callback();
 }
 
+const endpoints = [
+  {
+    name: "litterBins",
+    path: "litter-bins",
+    icon: binIcon,
+  },
+  {
+    name: "litter",
+    path: "litter",
+    icon: litterIcon,
+  },
+];
+
+
+
 const fetchMarkers = () => {
-    fetch(`${location.origin}/litter-bins`).then(res => res.status == 200 && res.json()).then(data => {
+  endpoints.forEach(endpoint=>{
+    fetch(`${location.origin}/${endpoint.path}`)
+      .then((res) => res.status == 200 && res.json())
+      .then((data) => {
         console.log(data);
-        data.litterBins.map(litterBin=> {
-            let newMarker = new google.maps.Marker({
-                position: { lat: litterBin.lat, lng: litterBin.lng },
-                map: map,
-                icon: { ...markerIcon, fillColor: icons.default.color, anchor: new google.maps.Point(11, 22)},
-                title: litterBin.message
-                
+        data.markers.map((litterBin) => {
+          let newMarker = new google.maps.Marker({
+            position: { lat: litterBin.lat, lng: litterBin.lng },
+            map: map,
+            icon: {
+              ...endpoint.icon,
+              fillColor: icons.default.color,
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(8,8),
+            },
+            title: litterBin.message,
+          });
+          newMarker.addListener("mouseover", () =>
+            newMarker.setIcon({
+              ...endpoint.icon,
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(8,8),
+              fillColor: icons.hover.color,
+            })
+          );
+          newMarker.addListener("mouseout", () =>
+            newMarker.setIcon({
+              ...endpoint.icon,
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(8,8),
+              fillColor: icons.default.color,
+            })
+          );
+          newMarker.addListener("click", () => {
+            foundMessageContainer.style.opacity = 1;
+            foundMessageContent.textContent = litterBin.message;
+            foundMessageImage.src = "";
+            if (litterBin.photoId.length > 0) {
+              fetch(`${location.origin}/image?id=${litterBin.photoId}`)
+                .then((res) => res.status == 200 && res.json())
+                .then((data) => (foundMessageImage.src = data.image));
+            }
+          });
         });
-        newMarker.addListener("mouseover", () => newMarker.setIcon({ ...newBinIcon, anchor: new google.maps.Point(11, 22), fillColor: icons.hover.color }));
-        newMarker.addListener("mouseout", () => newMarker.setIcon({ ...newBinIcon, anchor: new google.maps.Point(11, 22), fillColor: icons.default.color }));
-        newMarker.addListener("click", () => { 
-          foundMessageContainer.style.opacity = 1;
-          foundMessageContent.textContent = litterBin.message;
-          foundMessageImage.src = "";
-          if (litterBin.photoId.length > 0) {
-            fetch(`${location.origin}/image?id=${litterBin.photoId}`).then(res=>res.status == 200 && res.json()).then(data=>foundMessageImage.src=data.image);
-          }
-        }
-        );
-        });
-    }) 
+      }); 
+  })
+    
 };
 
 function init() {
