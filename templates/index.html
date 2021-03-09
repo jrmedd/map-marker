@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manchester – bins</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?18" />
-    <script src="{{ url_for('static', filename='mapStyle.js')}}?18"> </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?19" />
+    <script src="{{ url_for('static', filename='mapStyle.js')}}?19"> </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=&v=weekly" defer></script>
 </head>
 <body>
@@ -72,7 +72,7 @@
   <footer>
     <form id="message">
       <span id="message-input" name="message" type="text" rows="1" role="textbox" class="textarea" contenteditable="" tabindex="0" required></span>
-      <label for="location-query" >Bin name...</label>
+      <label for="location-query" >Description...</label>
       <input type="hidden" id="litter-or-bin" value="litter" />
       <input type="hidden" id="photo-id" />
       <button id="send-message" class="icon-button" type="submit">
@@ -112,7 +112,7 @@
       const clientLat = {{ latitude }};
       const clientLng = {{ longitude }};
     </script>
-  <script src="{{ url_for('static', filename='markerMaker.js') }}?18"></script>
-  <script src="{{ url_for('static', filename='getUserImage.js') }}?18"></script>
+  <script src="{{ url_for('static', filename='markerMaker.js') }}?19"></script>
+  <script src="{{ url_for('static', filename='getUserImage.js') }}?19"></script>
 </body>
 </html>
