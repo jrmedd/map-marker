@@ -31,21 +31,75 @@ header, footer, #found-message-container {
     padding: 2rem;
     box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.25);
     transition: all 0.3s ease;
+    max-width: 98%;
 }
 
 header {
     top: 0px;
     margin-top: 1rem;
-    justify-content: center;
-    max-width: 98%;
+    
 }
 
 footer {
-    max-width: 98%;
     bottom: -100vh;
     margin-bottom: 1rem;
     z-index: 999999999;
+}
 
+#search>*+button,
+#message>*+button {
+    margin-left: 1rem;
+}
+
+
+label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin-top: .5rem;
+    margin-left: 0;
+    font-size: 1.25rem;
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+input:focus+label,
+input:valid+label,
+.textarea:focus+label,
+.textarea:not(:empty)+label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin-top: -.5rem;
+    font-size: .8rem;
+}
+
+input,
+.textarea {
+    font-family: inherit;
+    font-size: 1.25rem;
+    outline: none;
+    border: 0;
+    border-bottom: 2px solid var(--main-road);
+    padding-top: .5rem;
+    display: block;
+    resize: none;
+    min-height: 2rem;
+    appearance: none;
+    flex: 1;
+    width: 0;
+    min-width: 0;
+}
+
+
+#search,
+#message {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex: 1;
 }
 
 #outline, #overlay {
@@ -147,6 +201,7 @@ button:disabled {
     align-items: center;
     justify-content: center;
     transition: .3s ease all;
+    flex-basis: 2.5rem;
 }
 
 .icon-text-button {
@@ -180,53 +235,6 @@ button:active svg {
     outline: none;
 }
 
-#search, #message {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    justify-content: flex-start;
-    align-items: flex-end;
-}
-
-#search > * + button, #message > * + button {
-    margin-left: 1rem;
-}
-
-#search {
-    flex: 1;
-}
-
-#message {
-    width: 50%;
-}
-
-footer form {
-    flex: 1;
-    margin-right: 1rem;
-}
-
-label { 
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    margin-top: .5rem;
-    margin-left: 0;
-    font-size: 1.25rem;
-    transition: all 0.2s ease;
-    pointer-events: none;
-}
-
-input:focus+label,
-input:valid+label,
-.textarea:focus+label,
-.textarea:not(:empty)+label {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    margin-top: -.5rem;
-    font-size: .8rem;
-}
-
 #add-bin {
     position: fixed;
     right: 0px;
@@ -241,28 +249,6 @@ input:valid+label,
     margin: 2rem;
 }
 
-input {
-    flex: 1;
-    font-family: inherit;
-    font-size: 1.25rem;
-    outline: none;
-    border: 0;
-    border-bottom: 2px solid var(--main-road);
-    padding-top: .5rem;
-}
-
-.textarea {
-    flex: 1;
-    font-family: inherit;
-    font-size: 1.25rem;
-    outline: none;
-    border: 0;
-    border-bottom: 2px solid var(--main-road);
-    padding-top: 1rem;
-    resize: none;
-    min-height: 2rem;
-    display: block;
-}
 
 
 
