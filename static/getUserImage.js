@@ -1,4 +1,4 @@
-let videoDevices = ["environment", "user"];
+let videoDevices;
 let cameraIndex = -1;
 let imageCapture;
 let imagePreview;
@@ -9,21 +9,20 @@ let photoOptions = {
 const cameraContainer = document.getElementById("camera-container");
 const loadingScreen = document.getElementById("loading");
 
-/*
+
 navigator.mediaDevices
   .enumerateDevices()
   .then((foundDevices) => {
-    videoDevices = foundDevices.filter((device) => device.kind === "videoinput")
-    const videoOptions = document.getElementById("video-options");
+    videoDevices = foundDevices.filter((device) => device.kind === "videoinput").map(device=>device.deviceId);
+    cameraIndex = videoDevices.length - 1;
   }
 );
-*/
 
 function switchCamera() {
   cameraIndex = (cameraIndex + 1) % videoDevices.length;
   imageCapture && imageCapture.track.stop();
   navigator.mediaDevices
-  .getUserMedia({ video: { facingMode:videoDevices[cameraIndex]}})
+  .getUserMedia({ video: { deviceId:videoDevices[cameraIndex]}})
   .then((stream) => {
     document.querySelector("video").srcObject = stream;
     const track = stream.getVideoTracks()[0];
@@ -58,6 +57,7 @@ document.getElementById("take-picture").addEventListener("click", ()=> {
         document.getElementById("photo-preview").src = imagePreview;
         document.getElementById("photo-preview").transform = "scale(1)"
         imageCapture.track.stop();
+        cameraIndex = videoDevices.length - 1;
         showFooter();
       });
     });
