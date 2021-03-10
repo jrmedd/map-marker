@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manchester – bins</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?31" />
-    <script src="{{ url_for('static', filename='mapStyle.js')}}?31"> </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?32" />
+    <script src="{{ url_for('static', filename='mapStyle.js')}}?32"> </script>
     <script async src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=visualization&v=weekly" defer></script>
     <style>
       {%  if not map_controls %}
@@ -50,6 +50,9 @@
         </button>
         <button  data-toggle="heatmap" data-display="litter"  class="icon-text-button map-option" type="button">
           Litter heatmap
+        </button>
+        <button  data-toggle="additional" data-display="additional"  class="icon-text-button map-option" type="button">
+          Additional data
         </button>
         <button id="map-options-button" class="icon-text-button" type="button">
           Map options
@@ -148,7 +151,7 @@
       const clientLat = {{ latitude }};
       const clientLng = {{ longitude }};
     </script>
-  <script src="{{ url_for('static', filename='markerMaker.js') }}?31"></script>
-  <script src="{{ url_for('static', filename='getUserImage.js') }}?31"></script>
+  <script src="{{ url_for('static', filename='markerMaker.js') }}?32"></script>
+  <script src="{{ url_for('static', filename='getUserImage.js') }}?32"></script>
 </body>
 </html>

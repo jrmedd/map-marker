@@ -93,7 +93,7 @@ def search():
 
 @APP.route('/search-many', methods=["GET"])
 def search_many():
-    r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json?input=%s&inputtype=textquery&fields=geometry&locationbias=circle:2000@%s&key=%s" %
+    r = requests.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=%s&=textquery&location=%s&radius=2000&key=%s" %
                      (request.args.get('query'), request.args.get('locationbias'), PLACES_API_KEY))
     if (r.status_code == 200):
         return jsonify(result=r.json())

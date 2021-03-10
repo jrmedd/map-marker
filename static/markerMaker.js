@@ -276,10 +276,31 @@ let markers = {
   },
   litter: {
     data: [],
-    gradient: [],
+    gradient: [
+    "rgba(0, 255, 255, 0)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 191, 255, 1)",
+    "rgba(0, 127, 255, 1)",
+    "rgba(0, 63, 255, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 0, 223, 1)",
+    "rgba(0, 0, 191, 1)",
+    "rgba(0, 0, 159, 1)",
+    "rgba(0, 0, 127, 1)",
+    "rgba(63, 0, 91, 1)",
+    "rgba(127, 0, 63, 1)",
+    "rgba(191, 0, 31, 1)",
+    "rgba(255, 0, 0, 1)",
+    ],
     heatmapData: [],
     heatmap: {},
   },
+  additional: {
+    data: [],
+    gradient: [],
+    heatmapData: [],
+    heatmap: {},
+  }
 };
 
 for (let option of document.getElementsByClassName("map-option")) {
@@ -289,6 +310,38 @@ for (let option of document.getElementsByClassName("map-option")) {
       toggleMarkers(toToggle);
     } else if (option.getAttribute("data-toggle") == "heatmap") {
       toggleHeatMap(toToggle);
+    } else if (option.getAttribute("data-toggle") == "additional") {
+      if (markers.additional.heatmapData.length == 0) {
+      let additionalData = window.prompt(
+        "What additional data should be displayed?"
+      );
+      fetch(
+        `${
+          location.origin
+        }/search-many?query=${additionalData}&locationbias=${map.center.lat()},${map.center.lng()}`
+      )
+        .then((res) => (res.status = 200 && res.json()))
+        .then((data) => {
+          data.result.results.map((result) =>
+            markers.additional.heatmapData.push(
+              new google.maps.LatLng(
+                result.geometry.location.lat,
+                result.geometry.location.lng
+              )
+            )
+          );
+          markers.additional.heatmap = new google.maps.visualization.HeatmapLayer(
+            { data: markers.additional.heatmapData, map: map, radius: 80 }
+          );
+          option.innerText = "Remove dataset";
+        });
+      }
+      else {
+        markers.additional.heatmap.setMap(null);
+        markers.additional.heatmap = null;
+        markers.additional.heatmapData = [];
+        option.innerText = "Additional data";
+      }
     }
   });
 }
@@ -349,6 +402,12 @@ const fetchMarkers = () => {
           newMarker.setMap(map);
         });
         markers[endpoint.name].heatmap = new google.maps.visualization.HeatmapLayer({data: markers[endpoint.name].heatmapData, radius: 80})
+        if (markers[endpoint.name].gradient.length > 0) {
+          markers[endpoint.name].heatmap.set(
+            "gradient",
+            markers[endpoint.name].gradient
+          );
+        }
       }); 
   })
 };
