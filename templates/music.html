@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <title>Musical bins</title>
+    <style>
+        body {
+            display: flex;
+            width: 100vw;
+            height:100vh;
+            overflow: hidden;
+            justify-content: center;
+            align-items: center;
+        }
+        #midi-control {
+            width: 40ch;
+            max-width: 98%;
+            position: relative;
+            display: flex;
+            flex-flow: column;
+            gap: 2rem;
+        }
+        .form-control {
+            position: relative;
+        }
+        .form-control input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" id="midi-control">
+        <div class="form-control">
+            <input value="21" id="midi-note-min" />
+            <label for="midi-note-min">Midi note minimum</label>
+        </div>
+        <div class="form-control">
+            <input value="108" id="midi-note-max" />
+            <label for="midi-note-max">Midi note maximum</label>
+        </div>
+        <div class="form-control">
+            <input value="63" id="midi-velocity-min" />
+            <label for="midi-velocity-min">Midi velocity minimum</label>
+        </div>
+        <div class="form-control">
+            <input value="127" id="midi-velocity-max" />
+            <label for="midi-velocity-max">Midi velocity maximum</label>
+        </div>
+        <div class="form-control">
+            <input value="0" id="midi-control-min" />
+            <label for="midi-control-min">Midi control minimum</label>
+        </div>
+        <div class="form-control">
+            <input value="127" id="midi-control-max" />
+            <label for="midi-control-max">Midi control maximum</label>
+        </div>
+        <div class="form-control">
+            <input value="192.168.86.31" id="destination-ip" />
+            <label for="destination-ip">Destination IP</label>
+        </div>
+        <div class="form-control">
+            <input value="8001" id="destination-port" />
+            <label for="destination-port">Destination port</label>
+        </div>
+        <button class="icon-text-button" id="send-notes">Send notes</button>
+    </form>
+    <script src="{{ url_for('static', filename='midiMaker.js') }}"></script>
+</body>
+</html>

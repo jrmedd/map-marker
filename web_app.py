@@ -37,8 +37,12 @@ def index():
         if r.status_code == 200:
             data = r.json()
             latitude = data.get('latitude')
-            longitude = data.get('longitude')        
-    return render_template('index.html', MAPS_API=MAPS_API, latitude=latitude, longitude=longitude)
+            longitude = data.get('longitude')    
+    if request.args.get('mapControls') == "1":
+        map_controls = True
+    else:
+        map_controls = False
+    return render_template('index.html', MAPS_API=MAPS_API, latitude=latitude, longitude=longitude, map_controls=map_controls)
 
 @APP.route('/admin')
 def admin():
@@ -85,6 +89,18 @@ def search():
     r = requests.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%s&inputtype=textquery&fields=geometry&locationbias=circle:2000@%s&key=%s" % (request.args.get('query'), request.args.get('locationbias'), PLACES_API_KEY))
     if (r.status_code == 200):
         return jsonify(result=r.json())
+
+
+@APP.route('/search-many', methods=["GET"])
+def search_many():
+    r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json?input=%s&inputtype=textquery&fields=geometry&locationbias=circle:2000@%s&key=%s" %
+                     (request.args.get('query'), request.args.get('locationbias'), PLACES_API_KEY))
+    if (r.status_code == 200):
+        return jsonify(result=r.json())
+
+@APP.route('/music-maker')
+def music_maker():
+    return render_template('music.html')
 
 if __name__ == '__main__':
     APP.run(host="0.0.0.0",debug=True)

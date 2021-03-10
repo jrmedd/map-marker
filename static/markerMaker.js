@@ -272,11 +272,13 @@ let markers = {
     data: [],
     gradient: [],
     heatmapData: [],
+    heatmap: {},
   },
   litter: {
     data: [],
     gradient: [],
     heatmapData: [],
+    heatmap: {},
   },
 };
 
@@ -284,9 +286,9 @@ for (let option of document.getElementsByClassName("map-option")) {
   option.addEventListener("click", (event) => {
     let toToggle = option.getAttribute("data-display");
     if (option.getAttribute("data-toggle") == "marker") {
-      toggleMarkers(markers[toToggle].data);
+      toggleMarkers(toToggle);
     } else if (option.getAttribute("data-toggle") == "heatmap") {
-      toggleHeatMap(markers[toToggle].heatmapData);
+      toggleHeatMap(toToggle);
     }
   });
 }
@@ -346,21 +348,17 @@ const fetchMarkers = () => {
           markers[endpoint.name].heatmapData.push(new google.maps.LatLng(litterBin.lat,litterBin.lng));
           newMarker.setMap(map);
         });
+        markers[endpoint.name].heatmap = new google.maps.visualization.HeatmapLayer({data: markers[endpoint.name].heatmapData, radius: 80})
       }); 
   })
 };
 
-const toggleMarkers = markers => {
-  markers.forEach(marker=>marker.setMap(!marker.getMap() ? map : null))
+const toggleMarkers = dataset => {
+  markers[dataset].data.forEach(marker=>marker.setMap(!marker.getMap() ? map : null))
 }
 
-const toggleHeatMap = data => {
-  let heatmap = new google.maps.visualization.HeatmapLayer({
-    data: data,
-    radius: 80
-  });
-  heatmap.setMap(!heatmap.getMap() ? map: null);
-  return heatmap;
+const toggleHeatMap = dataset => {
+  markers[dataset].heatmap.setMap(!markers[dataset].heatmap.getMap() ? map : null);
 }
 
 

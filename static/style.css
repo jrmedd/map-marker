@@ -240,7 +240,7 @@ button:active svg {
 .lower-map-menu {
     bottom: 0;
     position: fixed;
-    margin: 2rem;
+    margin: 1rem;
     background: none;
     transition: .3s all ease;
     display: flex;
@@ -269,7 +269,6 @@ button:active svg {
     align-items: flex-end;
     right: 0px;
     bottom: 0px;
-    margin: 2rem;
 }
 
 
