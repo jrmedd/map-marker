@@ -38,11 +38,7 @@ def index():
             data = r.json()
             latitude = data.get('latitude')
             longitude = data.get('longitude')    
-    if request.args.get('mapControls') == "1":
-        map_controls = True
-    else:
-        map_controls = False
-    return render_template('index.html', MAPS_API=MAPS_API, latitude=latitude, longitude=longitude, map_controls=map_controls)
+    return render_template('index.html', MAPS_API=MAPS_API, latitude=latitude, longitude=longitude)
 
 @APP.route('/admin')
 def admin():

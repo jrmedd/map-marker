@@ -7,13 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?32" />
     <script src="{{ url_for('static', filename='mapStyle.js')}}?32"> </script>
     <script async src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API }}&callback=init&libraries=visualization&v=weekly" defer></script>
-    <style>
-      {%  if not map_controls %}
-      #map-options {
-        display: none;
-      }
-      {% endif %}
-    </style>
 </head>
 <body>
   <header>
